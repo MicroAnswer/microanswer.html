@@ -1,0 +1,94 @@
+body {
+    width: 100%;
+}
+
+body, body * {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,Hack, serif;
+}
+
+/*
+ 如果body内出现了style节点, 这是我不允许的,将其隐藏
+*/
+style, script {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    display: none;
+    z-index: -999;
+}
+
+.content-left-h {
+    text-align: left;
+}
+
+.content-center-h {
+    text-align: center;
+}
+
+.content-right-h {
+    text-align: right;
+}
+
+.page-width {
+    width: 1000px
+}
+
+.page-width-padding5 {
+    width: 990px;
+    padding: 5px;
+}
+
+.btn {
+    cursor: pointer;
+    text-decoration: none;
+    cursor: hand;
+    color: gray;
+    -webkit-transition-duration: 230ms;
+    -moz-transition-duration: 230ms;
+    -ms-transition-duration: 230ms;
+    -o-transition-duration: 230ms;
+    transition-duration: 230ms;
+
+    margin: 0 5px;
+    padding: 0 10px;
+}
+
+.btn:hover {
+    color: black;
+}
+
+.button {
+    padding: 6px 20px;
+    color: gray;
+    border-radius: 3px;
+    background-color: #eaeaea;
+    border: 0.8px solid #f0f0f0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    cursor: hand;
+}
+
+.button:hover {
+    background-color: #e0e0e0;
+}
+
+.primary {
+    background-color: #cf1257;
+    color: white;
+}
+
+.primary:hover {
+    background-color: #cf1257;
+    border: 0.8px solid #cf1257;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, .6);
+}
+.primary:active {
+    background-color: #cf1257;
+    border: 0.8px solid #cf1257;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+}

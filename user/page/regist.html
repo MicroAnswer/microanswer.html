@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>注册 Microanswer</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="/css/weui.min.css">
+    <script src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/js/store.min.js"></script>
+    <script src="/js/weui.min.js"></script>
+    <script src="/js/util.js"></script>
+</head>
+<body>
+<div style="position: relative" id="page">
+    <!-- 顶部logo -->
+    <span class="logo">Regist</span>
+
+    <!-- 输入区域 -->
+    <div class="main-content">
+        <div class="content">
+            <div class="content-title">注册一个新的账号</div>
+            <div class="content-input">
+                <div class="content-input-item"><input class="input" type="text" id="name" placeholder="用户名"/></div>
+                <div class="content-input-item"><input class="input" type="password" id="password" placeholder="密码"/>
+                </div>
+                <div class="content-input-item"><input class="input" type="password" id="repassword"
+                                                       placeholder="重复密码"/></div>
+                <div style="clear:both;padding-top: 10x;">
+                    <a class="btn" id="btnRegist">立 即 注 册 ></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 微信和QQ入口 -->
+    <div class="wechatqq-content">
+        <a class="threeRd" href="javascript:;">
+            <img class="threeRdImg" src="../../img/qq.svg"/>
+            <span>QQ 注册</span>
+        </a>
+        <a class="threeRd" href="javascript:;">
+            <img class="threeRdImg" src="../../img/wechat.svg" style="width: 33px;height: 33px"/>
+            <span>微信注册</span>
+        </a>
+    </div>
+</div>
+<script>
+    var me = {
+        init: function () {
+            me.methods.initPage();
+        },
+        doms: {
+            page: $("#page"),
+            name: $("#name"),
+            password: $("#password"),
+            repassword: $("#repassword"),
+            btnRegist: $("#btnRegist")
+        },
+        datas: {},
+        methods: {
+            initPage: function () {
+                me.doms.page.css('height', window.innerHeight + 'px');
+
+                me.doms.btnRegist.on("click", me.methods.onBtnRegistClick);
+            },
+
+            // 立即注册点击
+            onBtnRegistClick: function () {
+                var name = me.doms.name.val();
+                var password = me.doms.password.val();
+                var repassword = me.doms.repassword.val();
+                try {
+                    Util.nullThrow(name, "请输入用户名");
+                    Util.nullThrow(password, "请输入密码");
+                    Util.nullThrow(repassword, "请重复输入密码");
+                    Util.falseThrow(password === repassword, "两次密码输入不一致");
+                } catch (err) {
+                    Util.topTip(err.message, "warn");
+                    return;
+                }
+
+                me.methods.regist(name, password);
+
+            },
+            // 执行注册
+            regist: function (name, password) {
+
+                var param = {
+                    name: name,
+                    password: password
+                };
+
+                Util.postUI({
+                    api: Util.API.USER().REGIST,
+                    param: param,
+                    success: function (result) {
+                        // 立刻执行登录
+                        var param = {
+                            name: name,
+                            password: password,
+                            loginType: Util.getDeviceType(),
+                            loginTypeName: '通过 ' + Util.getBrowserName() + ' 登录'
+                        };
+                        Util.postUI({
+                            api: Util.API.USER().LOGIN,
+                            param: param,
+                            success: function (result) {
+                                // 保存服务器返回的登录token
+                                Util.storeSet(CONSTANT.KEY_LOGIN_TOKEN, result);
+
+                                if (Util.isFlappyBirdWeb()) {
+                                    // 当前浏览器是 像素鸟 游戏中的浏览器， 获取用户信息后，直接只执行对应登录完成的回调
+                                    var ll = Util.loading("加载用户信息...");
+
+                                    var api = Util.API.USER().GET_USER_INFO;
+                                    var param = {
+                                        token: result || ''
+                                    };
+                                    Util.post(api[0], api[1], param, function (data) {
+                                        data.account = name;
+                                        data.password = password;
+                                        data.token = result;
+
+                                        // 回调 登录成功方法
+                                        window.flappyBird.onLogin(JSON.stringify(data));
+                                        ll.hide();
+                                    }, function (errStr, code) {
+                                        if (code == 501 || code == 502) {
+                                            // 未登录，或者登录信息过期，重新登录
+                                            Util.pageReplaceTo("/login.html");
+                                        }
+                                        Util.topTip(errStr, "warn");
+                                        ll.hide();
+                                    });
+                                } else {
+                                    // 跳转个人中心
+                                    Util.pageReplaceTo("./index.html");
+                                }
+                            }
+                        });
+                    }
+                });
+
+            }
+
+        }
+    };
+    $(document).ready(function () {
+        me.init();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>排行榜</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/css/weui.min.css">
+    <style>
+        html, body, body * {
+            padding: 0;
+            margin: 0;
+        }
+        #pageroot {
+            background: #54c2ca url("/img/flappybg2.png") no-repeat bottom;
+            background-size: contain;
+            background-position-y: 120%;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo {
+            display: block;
+            width: 55%;
+            margin: 50px auto;
+        }
+
+        .scorebord {
+            position: relative;
+            overflow: hidden;
+            width: 85%;
+            margin: 0 auto;
+            background: url("/img/scorebg.png") no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .scorebord table {
+            width: 95%;
+            margin: 10px auto;
+        }
+
+        .headd {
+            color: #533847;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        td {
+            text-align: center;
+            line-height: 30px;
+            color: #533847;
+            border-bottom: 1px solid #999999;
+            text-shadow: 1px 1px #f0eaa4;
+        }
+
+        .loa {
+            position: absolute;
+            display: block;
+            width: 30px;
+            height: 30px;
+            left: 98px;
+            top: 98px;
+        }
+    </style>
+</head>
+<body>
+<div id="pageroot">
+
+    <!-- Logo -->
+    <img class="logo" src="/img/flappybglogo.png"/>
+
+    <!-- 成绩面板 -->
+    <div class="scorebord">
+        <i class="weui-loading loa"></i>
+        <div class="empty" style="display: none;text-align: center;margin-top: 70px;">暂无排行，赶快玩一下吧!</div>
+        <table cellspacing="0" cellpadding="0" class="tabee" style="display: none">
+            <thead>
+            <tr>
+                <th class="headd">排名</th>
+                <th class="headd">玩家</th>
+                <th class="headd">得分</th>
+            </tr>
+            </thead>
+            <tbody id="content">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/store.min.js"></script>
+<script src="/js/weui.min.js"></script>
+<script src="/js/util.js"></script>
+<script>
+    var KEY_PAIHANG_DATA = "_phdada_";
+
+    var me = {
+        init: function () {
+            me.methods.initPageSize();
+            me.methods.loadPaiHangBang();
+        },
+        datas: {},
+        doms: {
+            pageRoot: $("#pageroot"),
+            loadingIcon: $(".loa"),
+            table: $(".tabee"),
+            content: $("#content"),
+            empty: $(".empty"),
+            scorebord: $(".scorebord")
+        },
+        methods: {
+            initPageSize: function () {
+                me.doms.pageRoot[0].style.height = window.innerHeight + 'px';
+                me.doms.scorebord[0].style.height = (window.innerHeight * 0.60) + 'px';
+            },
+            // 加载排行榜
+            loadPaiHangBang: function () {
+
+                // 先尝试读取缓存，
+                var data = store.get(KEY_PAIHANG_DATA) || undefined;
+
+                if (data) {
+                    me.methods.renderData(data);
+                }
+
+                // 请求网络
+                Util.post("/flappybird/index.php", "getScores", {}, function (data) {
+                    store.set(KEY_PAIHANG_DATA, data);
+                    me.methods.renderData(data);
+                }, function (errStr, code) {
+                    if (600 === code) { // 还没有排行数据
+                        me.doms.loadingIcon.css("display", "none");
+                        me.doms.table.css("display", "none");
+                        me.doms.empty.css("display", "block");
+                        return;
+                    }
+                    Util.alert(errStr);
+                });
+            },
+            // 渲染排行数据
+            renderData: function (data) {
+                me.doms.table.css("display", "table");
+                me.doms.loadingIcon.css("display", "none");
+
+                me.doms.content.html('');
+                for (var index = 0; index < data.length; index++) {
+                    var item = data[index];
+                    me.doms.content.append("<tr><td>" + (index + 1) + "</td><td>" + item.name + "</td><td>" + item.score + "</td></tr>");
+                }
+
+            }
+        }
+    };
+
+    $(function () {
+        me.init();
+    });
+</script>
+</html>

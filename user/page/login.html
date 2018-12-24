@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>登录 Microanswer</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="/css/weui.min.css">
+    <script src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/js/store.min.js"></script>
+    <script src="/js/weui.min.js"></script>
+    <script src="/js/util.js"></script>
+</head>
+<body>
+<div style="position: relative" id="page">
+    <!-- 顶部logo -->
+    <span class="logo">Login</span>
+
+    <!-- 输入区域 -->
+    <div class="main-content">
+        <div class="content">
+            <div class="content-title">登录您的账号</div>
+            <div class="content-input">
+                <div class="content-input-item"><input class="input" type="text" id="name" placeholder="用户名"/></div>
+                <div class="content-input-item"><input class="input" type="password" id="password" placeholder="密码"/>
+                </div>
+                <div class="">
+                    <label style="font-size: 14px;color: gray">
+                        <input type="checkbox" style="vertical-align: middle" id="remberpassword"> 记住密码</label>
+                    <a style="float: right;font-size: 14px;color: #999;text-decoration: none;"
+                       href="javascript:;" id="forgetPassword">忘记密码？</a>
+                </div>
+                <div style="clear:both;padding-top: 13px;">
+                    <a class="btn" id="btnLogin">登 录</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 注册入口 -->
+    <a class="regist_now" href="./regist.html">没有账号？立即注册。</a>
+
+    <!-- 微信和QQ入口 -->
+    <div class="wechatqq-content">
+        <a class="threeRd" href="javascript:;">
+            <img class="threeRdImg" src="../../img/qq.svg"/>
+            <span>QQ 登录</span>
+        </a>
+        <a class="threeRd" href="javascript:;">
+            <img class="threeRdImg" src="../../img/wechat.svg" style="width: 33px;height: 33px"/>
+            <span>微信登录</span>
+        </a>
+    </div>
+</div>
+<script>
+
+    var KEY_USER_LOGIN_INFO = "__user_login_info__";
+
+    var me = {
+        init: function () {
+            me.methods.initPage();
+            me.doms.btnLogin.on("click", me.methods.onLoginClick);
+            me.doms.forgetPassword.on("click", me.methods.onforgetPasswordClick);
+        },
+        doms: {
+            page: $("#page"),
+            name: $("#name"),
+            password: $("#password"),
+            remberPassword: $("#remberpassword"),
+            btnLogin: $("#btnLogin"),
+            forgetPassword: $("#forgetPassword")
+        },
+        datas: {},
+        methods: {
+            initPage: function () {
+                me.doms.page.css('height', window.innerHeight + 'px');
+
+                // 读取缓存的用户信息
+                var userLoginInfo = Util.storeGet(KEY_USER_LOGIN_INFO) || {};
+                me.doms.name.val(userLoginInfo.name || '');
+                me.doms.password.val(userLoginInfo.password || '');
+                me.doms.remberPassword.attr('checked', userLoginInfo.remberPassword || false);
+                if (!userLoginInfo.remberPassword) { // 没有记住密码标识， 立刻删除登录信息。
+                    Util.storeRemove(KEY_USER_LOGIN_INFO);
+                }
+            },
+
+            // 执行登录
+            login: function (name, password) {
+                var param = {
+                    name: name,
+                    password: password,
+                    loginType: Util.getDeviceType(),
+                    loginTypeName: '通过 ' + Util.getBrowserName() + ' 登录'
+                };
+                Util.postUI({
+                    api: Util.API.USER().LOGIN,
+                    param: param,
+                    success: function (result) {
+                        // 保存服务器返回的登录token
+                        Util.storeSet(CONSTANT.KEY_LOGIN_TOKEN, result);
+
+                        if (Util.isFlappyBirdWeb()) {
+                            // 当前浏览器是 像素鸟 游戏中的浏览器， 获取用户信息后，直接只执行对应登录完成的回调
+                            var ll = Util.loading("加载用户信息...");
+
+                            var api = Util.API.USER().GET_USER_INFO;
+                            var param = {
+                                token: result || ''
+                            };
+                            Util.post(api[0], api[1], param, function (data) {
+                                data.account = name;
+                                data.password = password;
+                                data.token = result;
+
+                                // 回调 登录成功方法
+                                window.flappyBird.onLogin(JSON.stringify(data));
+                                ll.hide();
+                            }, function (errStr, code) {
+                                if (code == 501 || code == 502) {
+                                    // 未登录，或者登录信息过期，重新登录
+                                    Util.pageReplaceTo("/login.html");
+                                }
+                                Util.topTip(errStr, "warn");
+                                ll.hide();
+                            });
+                        } else {
+                            // 跳转个人中心
+                            Util.pageReplaceTo("./index.html");
+                        }
+                    }
+                });
+
+            },
+
+            // 登录点击
+            onLoginClick: function () {
+                var name = me.doms.name.val();
+                var password = me.doms.password.val();
+
+                try {
+                    Util.nullThrow(name, "请输入用户名");
+                    Util.nullThrow(password, "请输入用户密码");
+                } catch (err) {
+                    Util.topTip(err.message, 'warn');
+                    return;
+                }
+
+                var remberPassword = me.doms.remberPassword.is(':checked');
+                if (remberPassword) {
+                    // 记住密码
+                    Util.storeSet(KEY_USER_LOGIN_INFO, {name: name, password: password, remberPassword: true});
+                } else {
+                    // 不记住密码
+                    Util.storeRemove(KEY_USER_LOGIN_INFO);
+                }
+
+                me.methods.login(name, password);
+            },
+
+            // 忘记密码点击
+            onforgetPasswordClick: function () {
+                Util.topTip("目前不提供忘记密码找回服务。")
+            }
+
+        }
+    };
+    $(document).ready(function () {
+        me.init();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+body .layer-style-microanswer {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, .4);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+body .layer-anim {
+    animation-name: dialog-in;
+}
+
+body .layer-anim-close {
+    animation-name: dialog-out;
+}
+
+@keyframes dialog-in {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(2);
+        -moz-transform: scale(2);
+        -ms-transform: scale(2);
+        -o-transform: scale(2);
+        transform: scale(2);
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes dialog-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(0.8);
+        -moz-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        -o-transform: scale(0.8);
+        transform: scale(0.8);
+    }
+}
+
+body .layer-style-microanswer .layui-layer-title {
+    background: linear-gradient(135deg, #cf1257, #cf7521);
+    color: white;
+}
+
+body .layer-style-microanswer .layui-layer-setwin a {
+
+}
+
+body .layer-style-microanswer .layui-layer-btn {
+}
+
+body .layer-style-microanswer .layui-layer-content {
+    color: #cf1257;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .4);
+}
+
+body .layer-style-microanswer .layui-layer-btn a {
+    background-color: #cf1257;
+    border: solid 1px #cf1257;
+}

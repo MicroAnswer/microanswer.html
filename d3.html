@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>图片3D切换</title>
+    <link href="./css/d3.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+<!-- 第一种方案 -->
+<div class="banner-3d">
+    <div class="banner-3d-content">
+        <ul class="banner-3d-content-ul">
+        </ul>
+    </div>
+    <div class="banner-3d-doter">
+        <ul class="banner-3d-doter-ul">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 第二种方案 -->
+<div class="banner-3d-2" id="banner-3d-2">
+    <div class="banner-3d-2-content">
+        <div v-for="i in row" class="d3Item-row">
+            <div v-for="j in col" class="d3Item" v-bind:style="{width: d3Item.width + 'px', height: d3Item.height + 'px'}">
+                <!-- 开始进行立体方块的布局 -->
+
+                <!-- 正面 -->
+                <div class="front" v-bind:style="__getImg('front',i,j)"></div>
+                <!-- 右面 -->
+                <div class="right" v-bind:style="__getImg('right',i,j)"></div>
+                <!-- 后面 -->
+                <div class="back" v-bind:style="__getImg('back',i,j)"></div>
+                <!-- 左面 -->
+                <div class="left" v-bind:style="__getImg('left',i,j)"></div>
+                <!-- 上面 -->
+                <div class="top"></div>
+                <!-- 下面 -->
+                <div class="bottom"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script rel="script" type="text/javascript" src="./js/vue_2.5.16.js"></script>
+<script>
+
+    (function () {
+        // 第一种方案的 js 代码
+        var banner3d = {
+            init: function (imgs) {
+                this.datas.imgs = imgs;
+                this.methods.initDisplayLiCount(17);
+
+                for (var ind = 0; ind < this.doms.banner3dDoterUlLi.length; ind++) {
+                    this.doms.banner3dDoterUlLi[ind].addEventListener('click', this.methods.dotliClick);
+                }
+
+                setTimeout(this.methods.toag, this.datas.delay);
+            },
+            methods: {
+                initDisplayLiCount: function (count) {
+                    var eachLiWidth = (banner3d.datas.width / count);
+                    for (var index = 0; index < count; index++) {
+                        var liHtml = '<li style="width: ' + eachLiWidth + 'px;height: 300px">' +
+                            '<div class="img-surface img_1" style="background-image: url(\'' + banner3d.datas.imgs[0] + '\');background-position: ' + ((eachLiWidth * (-index))) + 'px"></div>' +
+                            '<div class="img-surface img_2" style="background-image: url(\'' + banner3d.datas.imgs[1] + '\');background-position: ' + ((eachLiWidth * (-index))) + 'px"></div>' +
+                            '<div class="img-surface img_3" style="background-image: url(\'' + banner3d.datas.imgs[2] + '\');background-position: ' + ((eachLiWidth * (-index))) + 'px"></div>' +
+                            '<div class="img-surface img_4" style="background-image: url(\'' + banner3d.datas.imgs[3] + '\');background-position: ' + ((eachLiWidth * (-index))) + 'px"></div>' +
+                            '</li>';
+                        banner3d.doms.banner3dContentUl.innerHTML += liHtml;
+                    }
+                },
+                toag: function () {
+                    if (banner3d.datas.pause) return;
+                    var nextIndex = banner3d.datas.currentIndex + 1;
+                    if (nextIndex > 3) nextIndex = 0;
+                    banner3d.methods.switch2(nextIndex);
+                    setTimeout(banner3d.methods.toag, banner3d.datas.delay);
+                },
+                switch2: function (index) {
+                    var lis = document.querySelectorAll(".banner-3d-content-ul li");
+                    for (var i = 0; i < lis.length; i++) {
+                        var li = lis[i];
+                        var d = 90 * index;
+                        li.style.transform = "rotateX(-" + d + "deg)";
+                        li.style.transitionDelay = (banner3d.datas.offsetTime * (i + 1)) + "ms";
+                    }
+                    var lastIndex = banner3d.datas.currentIndex;
+                    banner3d.doms.banner3dDoterUlLi[lastIndex].className = "";
+                    banner3d.doms.banner3dDoterUlLi[index].className = "active";
+                    banner3d.datas.currentIndex = index;
+                },
+                dotliClick: function () {
+                    banner3d.methods.switch2(this.innerText - 1);
+                }
+            },
+            doms: {
+                banner3dContentUl: document.querySelector(".banner-3d-content-ul"),
+                banner3dDoterUlLi: document.querySelectorAll(".banner-3d-doter-ul li"),
+            },
+            datas: {
+                imgs: [], // 要显示的图片，通过 init 方法初始化传递进来
+                delay: 3000, // 每隔 3 秒钟自动切换一次
+                width: 800, // 宽度
+                height: 300, // 高度
+                currentIndex: 0, // 当前图像位置
+                offsetTime: 20, // 每个方块动画偏移时间
+                pause: false, // 标记是否暂停自动播放
+            }
+        };
+        banner3d.init(['imgs/b1.jpg', 'imgs/b2.png', 'imgs/b3.jpg', 'imgs/b4.png']);
+
+        // 第二种方案的 js 代码。 第二种方案使用 Vue 实现
+        var banner3d2 = new Vue({
+            el: "#banner-3d-2",
+            created: function () {
+                var _this = this;
+                _this.initSizeD3Item();
+                _this.$nextTick(function () {
+                    _this.startPlay();
+                });
+            },
+            mounted: function () {},
+            methods: {
+                // 初始化每个立体方块的配置
+                initSizeD3Item: function () {
+                    // 根据设定的行列数，和 banner 的宽高，计算出每一个立体方块应该使用的长宽高。
+                    this.d3Item.height = this.height / this.row; // 计算高度
+                    this.d3Item.width = this.width / this.col; // 计算宽度
+                    this.d3Item.length = this.d3Item.width; // 计算厚度
+                },
+                // 开始自动播放
+                startPlay: function () {
+
+                    var _this = this;
+                    var play = function () {
+                        var nextIndex = _this.currentIndex + 1;
+                        if (nextIndex > 3) nextIndex = 0;
+                        _this.switch2(nextIndex);
+                        setTimeout(play, _this.delay);
+                    };
+
+                    setTimeout(play, this.delay);
+                },
+                // 切换到某一个面
+                switch2: function (index) {
+                    var d3ItemRows = this.$el.children[0].children;
+                    for (var i = 0; i < d3ItemRows.length; i++) {
+                        var d3ItemRow = d3ItemRows[i];
+                        for (var j = 0; j < d3ItemRow.children.length; j++) {
+                            var d3ItemCol = d3ItemRow.children[j];
+                            d3ItemCol.style.transitionDelay = ((j + i) * this.d3Item.animDelay) + "ms";
+                            d3ItemCol.style.webkitTransitionDelay = ((j + i) * this.d3Item.animDelay) + "ms";
+                            d3ItemCol.style.transform = "rotateY(" + (90 * index) + "deg)";
+                            d3ItemCol.style.webkitTransform = "rotateY(" + (90 * index) + "deg)";
+                        }
+                    }
+                    this.currentIndex = index;
+                },
+                // 设置图片数组
+                setImage: function (arr) {
+                    this.images = arr;
+                },
+                // 获取对应位置图片
+                __getImg: function (position, row, col) {
+                    var style = {};
+                    switch (position) {
+                        case 'front':
+                            style.backgroundImage = "url('../imgs/b1.jpg')";
+                            break;
+                        case 'right':
+                            style.backgroundImage = "url('../imgs/b4.png')";
+                            break;
+                        case 'back':
+                            style.backgroundImage = "url('../imgs/b3.jpg')";
+                            break;
+                        case 'left':
+                            style.backgroundImage = "url('../imgs/b2.png')";
+                            break;
+                    }
+
+                    style.backgroundPosition = "-" + ((col - 1) * this.d3Item.width) + "px -" + ((row - 1) * this.d3Item.height) + "px";
+                    return style;
+                }
+            },
+            watch: {},
+            computed: {},
+            beforeDestroy: function () {},
+            data: function () {
+                return {
+                    d3Item: { // 每一个立体方块的 宽高配置
+                        animDelay: 30, // 后一个方块比前一个方延迟多长时间执行 单位毫秒
+                        height: 0, // 每一个立体方块的高度
+                        width: 0, // 每一个立体方块的宽度
+                        length: 0, // 每一个立体方块的厚度 这三个变量在 created 方法中被初始化。 这三个变量相当于 立方体的长宽高
+                    },
+
+                    width: 800, // banner 的高度为 800px
+                    height: 300, // banner 的宽度为 300px
+                    row: 10, // 标记共有多少列
+                    col: 10, // 标记共有多少行
+                    currentIndex: 0, // 标记当前滚动到的下标位置
+                    delay: 3000, // 每隔多少毫秒切换一个面
+                    images: [], // 要显示的图片
+                };
+            }
+
+        });
+
+    })();
+</script>
+
+</body>
+</html>

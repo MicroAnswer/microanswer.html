@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/css/weui.min.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/store.min.js"></script>
+    <script src="/js/weui.min.js"></script>
+    <script src="/js/util.js"></script>
+</head>
+<body>
+<div class="usercenter">
+    <div class="logo">userCenter</div>
+
+    <div class="content">
+        <!-- 头像区域板块 -->
+        <div class="head-panel">
+            <!-- 头像-->
+            <img src="/img/defaulthead.jpg" class="head-img" id="head-img"/>
+
+            <!-- 用户名 -->
+            <div class="user-name" id="username"></div>
+            <div class="user-signature" id="user-signature">这个人很懒，什么都没留下！</div>
+
+            <!-- 用户信息加载提示 -->
+            <i class="weui-loading loadtip" style="width: 15px;height: 15px;"></i>
+
+        </div>
+
+    </div>
+
+    <div style="background-color: #f8f8f8;overflow: hidden;margin-top: 10px;">
+        <div class="weui-cells__title">关联的账户</div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access" href="javascript:;" id="qqAccount">
+                <div class="weui-cell__bd">QQ</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" id="wechatAccount">
+                <div class="weui-cell__bd">微信</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+
+        <div class="weui-cells__title">操作</div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access" href="javascript:;" id="loginOut">
+                <div class="weui-cell__bd">退出登录</div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    var KEY_USERINFO = "_user_info_";
+
+    var me = {
+        init: function () {
+            me.doms.btnLoginOut.on("click", me.methods.onloginOutClick);
+            me.doms.btnWechatAccount.on("click", me.methods.onbtnWechatAccountClick);
+            me.doms.btnQQAccount.on("click", me.methods.onbtnQQAccountClick);
+
+            me.methods.loadUsernfo();
+        },
+        doms: {
+            btnLoginOut: $('#loginOut'),
+            loadtip: $(".loadtip"),
+            headImg: $("#head-img"),
+            userName: $("#username"),
+            btnQQAccount: $("#qqAccount"),
+            btnWechatAccount: $("#wechatAccount"),
+            userSignature: $('#user-signature')
+        },
+        datas: {},
+        methods: {
+            // 加载用户信息
+            loadUsernfo: function () {
+
+                // 先尝试从缓存加载
+                var userCacheInfo = Util.storeGet(KEY_USERINFO);
+                if (userCacheInfo) {
+                    // 存在用户信息, 进行渲染用户信息
+                    me.methods.renderUserInfo(userCacheInfo);
+                }
+
+                // 从网络加载用户信息
+                var api = Util.API.USER().GET_USER_INFO;
+                var token = Util.storeGet(CONSTANT.KEY_LOGIN_TOKEN);
+                var param = {
+                    token: token || ''
+                };
+                Util.post(api[0], api[1], param, function (data) {
+                    me.doms.loadtip.css('display', 'none');
+                    me.methods.renderUserInfo(data);
+                    // 缓存用户信息
+                    Util.storeSet(KEY_USERINFO, data);
+                }, function (errStr, code) {
+                    me.doms.loadtip.css('display', 'none');
+                    if (code == 501 || code == 502) {
+                        // 未登录，或者登录信息过期，重新登录
+                        Util.pageReplaceTo("/login.html");
+                    }
+                    Util.topTip(errStr, "warn");
+                });
+
+            },
+
+            // 渲染用户信息
+            renderUserInfo: function (userInfo) {
+                me.doms.userName.text(userInfo.name || '未填写');
+                me.doms.userSignature.text(userInfo.signature || '这个人很懒，什么都没留下！');
+                me.doms.headImg.attr('src', userInfo.head || '/img/defaulthead.jpg');
+                me.doms.btnQQAccount.children(".weui-cell__ft").text(userInfo.qq ? "已绑定" : "点击绑定");
+                me.doms.btnWechatAccount.children(".weui-cell__ft").text(userInfo.wechat ? "已绑定" : "点击绑定");
+            },
+            // 点击QQ
+            onbtnQQAccountClick: function () {
+                Util.topTip("功能实现中");
+            },
+            // 点击微信
+            onbtnWechatAccountClick: function () {
+                Util.topTip("功能实现中");
+            },
+            // 退出登录
+            loginOut: function () {
+                // 清除登录token 和用户信息
+                Util.storeRemove(CONSTANT.KEY_LOGIN_TOKEN);
+                Util.storeRemove(KEY_USERINFO);
+                Util.pageReplaceTo("./login.html");
+            },
+            // 退出登录点击
+            onloginOutClick: function () {
+                Util.confirm("您确定要退出登录吗？", function () {
+                    me.methods.loginOut();
+                });
+            }
+        }
+    };
+    $(document).ready(function () {
+        me.init();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+body, html {
+    margin: 0 0;
+    padding: 0 0;
+}
+
+.logo {
+    padding: 2px 6px;
+    color: gray;
+    font-size: 11px;
+    font-style: italic;
+}
+
+.main-content {
+    background-color: #f5f5f5;
+    box-shadow: 0 1px 3px gray;
+    padding: 10px 0 10px 0;
+    margin-top: 100px;
+}
+
+.content {
+    margin: 5px auto;
+    width: 80%;
+}
+
+.content-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.content-input-item {
+    padding: 0 14px;
+    background-color: white;
+    margin: 14px 0;
+    border-radius: 3px;
+    border: 1px solid #dddddd;
+}
+
+.input {
+    width: 100%;
+    outline: none;
+    padding: 8px 0;
+    font-size: 15px;
+    border: none;
+}
+
+.btn {
+    text-align: center;
+    padding: 7px 0;
+    display: block;
+    background-color: white;
+    border-radius: 3px;
+    color: #333;
+}
+
+.btn:active {
+    opacity: .8;
+}
+
+.regist_now {
+    display: block;
+    margin: 20px;
+    text-align: center;
+    color: #aaa;
+    font-size: 15px;
+}
+
+.wechatqq-content {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.threeRd {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+
+    color: #aaa;
+    font-size: 14px;
+    margin:0 10px;
+}
+
+.threeRdImg {
+    display: block;
+    margin: 0 auto;
+    width: 30px;
+    height: 30px
+}

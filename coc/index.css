@@ -1,0 +1,199 @@
+
+body, body * {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    clear: both;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,Hack, serif;
+}
+
+style, script {
+    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.content-center-h {
+    text-align: center;
+}
+
+.content-right-h {
+    text-align: right;
+}
+
+.page-width {
+    width: 1000px
+}
+.page-width {
+    width: 1000px;
+}
+
+.layout-asblock {
+    display: block;
+}
+
+.layout-center {
+    margin: 0 auto 0 auto;
+}
+
+.shadow {
+    border-radius: 4px;
+    box-shadow: 1px 1px 10px rgba(0,0,0,.5);
+}
+
+.txtaligncenter {
+    text-align: center;
+}
+
+.page-head {
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+    background-color: #cf1257;
+    box-shadow: 0 2px 15px rgba(207,18,87, 0.7);
+}
+
+.page-head-content {
+    height: 100px;
+}
+
+.page-head-content-icon {
+    display: inline-block;
+    font-size: 35px;
+    line-height: 100px;
+    font-weight: bold;
+    color: white;
+}
+
+.page-head-content-functions {
+    float: right;
+    display: inline-block;
+}
+
+.function-item {
+    display: inline-block;
+    height: 100px;
+    line-height: 100px;
+    padding: 0 20px;
+    color: white;
+    cursor: pointer;
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+}
+
+.transdur200 {
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+}
+
+.split-line {
+    display: block;
+    text-align: center;
+    position: relative;
+    color: #c0c0c0;
+}
+
+.split-line::before {
+    content: ' ';
+    position: absolute;
+    left: 40px;
+    top:50%;
+    height: 1px;
+    background-color: #c0c0c0;
+    width: 40%;
+}
+
+.split-line::after {
+    content: ' ';
+    position: absolute;
+    right: 40px;
+    top:50%;
+    height: 1px;
+    background-color: #c0c0c0;
+    width: 40%;
+}
+
+.function-item:hover {
+    background-color: rgba(255,255,255,0.3);
+}
+
+.page-banner {
+    height: 700px;
+    background-size: cover;
+    background: url("./img/coc-home-page-background.png") center no-repeat;
+}
+
+.page-banner img {
+    position: absolute;
+    right: 20px;
+    top: 150px;
+    width: 200px;
+}
+
+.fly-btn {
+    position: fixed;
+    right: 100px;
+    top:200px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 10px rgba(0,0,0,.5);
+    width: 60px;
+    padding: 6px 0;
+    font-weight: bold;
+    background-color: white;
+    cursor: pointer;
+}
+
+.fly-btn:hover {
+    background-color: #e0e0e0;
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.incoc-title {
+    display: block;
+    padding: 40px 0;
+    color: gray;
+}
+
+.step-img {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.step4 {
+    width: 70%;
+    text-align: center;
+    font-size: 40px;
+    color: #cf1257;
+    padding: 100px 0;
+}
+
+.page-foot {
+    width: 100%;
+    color: white;
+    background-color: rgba(100,100,100,0.2);
+    font-size: 15px;
+    padding: 20px 0;
+}
+
+.page-foot * {
+    display: inline-block;
+    vertical-align: middle;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.page-foot a:hover{
+    text-decoration: underline;
+}

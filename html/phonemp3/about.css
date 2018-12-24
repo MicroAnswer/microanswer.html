@@ -1,0 +1,229 @@
+
+body, body * {
+    margin: 0;
+    padding: 0;
+}
+
+/* 选中所有id以checkbox-开头的input */
+input[id^=checkbox-] {
+    display: none;
+}
+
+input[id^=checkbox-] + label {
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 25px;
+    border-radius: 12.5px;
+    background-color: #cf1257;
+    cursor: pointer;
+}
+
+input[id^=checkbox-]:checked + label + span::before {
+    content: '是';
+}
+
+input[id^=checkbox-] + label + span::before {
+    content: '否';
+}
+input[id^=checkbox-] + label::after {
+    position: absolute;
+    content: ' ';
+    -webkit-transition: ease 300ms;
+    -moz-transition: ease 300ms;
+    -ms-transition: ease 300ms;
+    -o-transition: ease 300ms;
+    transition: ease 300ms;
+    left: 1px;
+    top: 1px;
+    background: white;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    width: 23px;
+    height: 23px;
+    border-radius: 11.5px;
+
+}
+
+input[id^=checkbox-] + label::before {
+    position: absolute;
+    content: ' ';
+    -webkit-transition:ease 400ms;
+    -moz-transition:ease 400ms;
+    -ms-transition:ease 400ms;
+    -o-transition:ease 400ms;
+    transition:ease 400ms;
+    left: 1px;
+    top: 1px;
+    background-color: #f0f0f0;
+    width: 48px;
+    height: 23px;
+    border-radius: 11.5px;
+    z-index: 0;
+}
+
+input[id^=checkbox-]:checked + label::after {
+    position: absolute;
+    content: ' ';
+    left: 26px;
+    top: 1px;
+    background-color: white;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+    width: 23px;
+    height: 23px;
+    border-radius: 11.5px;
+}
+
+input[id^=checkbox-]:checked + label::before {
+    position: absolute;
+    content: ' ';
+    left: 75%;
+    top: 50%;
+    width: 0;
+    height: 0;
+}
+
+input, textarea {
+    border-radius: 3px;
+    border: 1px solid #cf1257;
+    outline: none;
+    font-size: 15px;
+    line-height: 18px;
+    padding: 4px;
+}
+
+.page-width {
+    width: 1000px;
+}
+
+.page-head {
+    width: 100%;
+    height: 120px;
+    line-height: 120px;
+    background: linear-gradient(135deg, #cf1257, #cf7521);
+    -webkit-box-shadow: 0 1px 10px 5px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 10px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 10px 5px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.page-head-in {
+    margin: 0 auto;
+}
+
+.page-head-logo {
+    display: inline-block;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.page-head-function {
+    display: inline-block;
+    clear: both;
+    float: right;
+    vertical-align: top;
+    cursor: pointer;
+}
+.hover:hover{
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+    color: yellowgreen;
+}
+
+.set-group {
+    width: 700px;
+    display: block;
+    margin: 20px auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.set-item {
+    width: 100%;
+    border-bottom: 0.5px solid #f0f0f0;
+}
+
+.set-item-title {
+    display: block;
+    font-weight: 500;
+    font-size: 20px;
+    background: linear-gradient(90deg, #cf7521, #cf1257);
+    color: white;
+    padding: 6px 0 6px 12px;
+}
+
+.set-item-content {
+    width: 100%;
+    min-height: 50px;
+    padding-top: 20px;
+}
+
+.input-group {
+    display: block;
+    padding: 0 20px 20px 20px;
+}
+
+#newapknewfunction {
+    max-width: 400px;
+    max-height: 160px;
+    height: 90px;
+    resize: vertical;
+}
+
+.label-item {
+    display: block;
+    font-size: 18px;
+}
+
+.label-item input {
+    width: 400px;
+}
+
+.set-item-foot {
+    display: block;
+    padding: 10px;
+    text-align: right;
+}
+
+.button {
+    padding: 6px 20px;
+    display: inline-block;
+    color: gray;
+    border-radius: 3px;
+    background-color: #eaeaea;
+    border: 0.8px solid #f0f0f0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    cursor: hand;
+}
+
+.button:hover {
+    background-color: #e0e0e0;
+}
+
+.primary {
+    background-color: #cf1257;
+    color: white;
+}
+
+.primary:hover {
+    background-color: #cf1257;
+    border: 0.8px solid #cf1257;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, .6);
+}
+
+.primary:active {
+    background-color: #cf1257;
+    border: 0.8px solid #cf1257;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+}

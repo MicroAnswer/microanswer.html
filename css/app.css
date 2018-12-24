@@ -1,0 +1,58 @@
+.main {
+    width: 70%;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.title {
+    font-size: 45px;
+    margin: 20px auto;
+    width: 70%;
+}
+
+.title-bar{
+    background-color: #e0e0e0;
+    color: #555555;
+    font-size: 18px;
+    padding: 6px 15px;
+}
+
+.content {
+    padding: 6px 0;
+    min-height: 130px;
+    overflow: hidden;
+}
+
+.item {
+    display: flex;
+    display: -webkit-flex;
+}
+
+.item *{
+    position: relative;
+    vertical-align: middle;
+    margin: 4px 0;
+}
+
+.item .name {
+    margin-left: 10px;
+}
+
+.item .download {
+    margin-right: 10px;
+}
+
+.item .line {
+    flex-grow: 1;
+    -webkit-flex-grow: 1;
+    position: relative;
+}
+
+.line::after {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    border-bottom: dotted 1px #e0e0e0;
+}

@@ -1,0 +1,64 @@
+
+/*主内容区域*/
+.main {
+    max-width: 900px;
+    min-width: 600px;
+    margin: 0 auto;
+    padding: 20px 50px;
+
+}
+.main, .main * {
+    font-family: '思源黑体 CN Normal', 'Hiragino', '微软雅黑', sans-serif;
+}
+
+.page-title {
+    font-size: 35px;
+    margin: 10px 0;
+}
+
+.desc {
+    color: gray;
+}
+
+.keys-input,
+.title-input {
+    width: 100%;
+    padding: 4px;
+    color: black;
+}
+
+.content-input {
+    width: 100%;
+    padding: 4px;;
+    color: black;
+    resize: vertical;
+}
+
+#btn-submuit {
+    display: block;
+    width: 70%;
+    margin: 50px auto;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 18px;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid #018ac1;
+    background-color: #018ac1;
+}
+
+.coverDevinf {
+    font-family: '思源黑体 CN Normal', 'Hiragino', '微软雅黑', sans-serif;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.7);
+    padding-top: 200px;
+    font-size: 30px;
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组装电脑采纳方案</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        table {
+            border: 1px solid black;
+            background: black;
+        }
+
+        td, th {
+            text-align: center;
+            padding: 4px 10px;
+            background: white;
+        }
+
+        td {
+            font-size: 15px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="re"></div>
+<script>
+
+    var me = {
+        init: function () {
+            me.methods.renderPlan(me.datas.plans);
+        },
+        doms: {
+            resultDom: document.querySelector("#re")
+        },
+        datas: {
+            plans: [
+                {
+                    title: '方案一',
+                    detail: [
+                        {
+                            part: '主板',
+                            name: '华硕PRIME B250M-PLUS',
+                            zp: '/',
+                            storage: '/',
+                            price: '649',
+                            status: '全新',
+                            link: 'https://detail.tmall.com/item.htm?spm=a230r.1.14.6.44e947d2B2wXj7&id=544735968529&cm_id=140105335569ed55e27b&abbucket=15'
+                        },
+                        {
+                            part: 'CPU',
+                            name: 'i3-8100',
+                            zp: '3.6GHZ',
+                            storage: '/',
+                            price: '621',
+                            status: '全新',
+                            link: 'https://item.taobao.com/item.htm?spm=a230r.1.14.38.71b044c2JqXakU&id=42587424608&ns=1&_u=k107v79he41f&abbucket=15'
+                        },
+                        {
+                            part: '内存',
+                            name: '海盗船',
+                            zp: '3000Mhz',
+                            storage: '8GB',
+                            price: '538',
+                            status: '全新',
+                            link: 'https://detail.tmall.com/item.htm?spm=a230r.1.14.1.795872bd5yuoHv&id=531738892644&ns=1&abbucket=15&skuId=3386005828121'
+                        },
+                        {
+                            part: '硬盘',
+                            name: '惠普 EX900 250GB PCIE ',
+                            zp: '/',
+                            storage: '250GB',
+                            price: '489',
+                            status: '全新',
+                            link: 'https://detail.tmall.com/item.htm?spm=a220o.1000855.0.da321h.15221f77yV5jc5&id=564910090746'
+                        },
+                        {
+                            part: '显卡',
+                            name: 'GTX 1050ti',
+                            zp: '/',
+                            storage: '4GB',
+                            price: '1098',
+                            status: '全新',
+                            link: 'https://detail.tmall.com/item.htm?spm=a220o.1000855.0.da321h.32305129xXKTjg&id=555734247378'
+                        },
+                        {
+                            part: '电源',
+                            name: '金河田智能芯680GTX静音台式机电脑电源主机电源额定500w',
+                            zp: '/',
+                            storage: '/',
+                            price: '179',
+                            status: '全新',
+                            link: 'https://detail.tmall.com/item.htm?spm=a220o.1000855.0.da321h.1ea926aeEM6XBQ&id=530323707201'
+                        },
+                        {
+                            part: '机箱',
+                            name: '航嘉 USB2/3.0电脑主机箱 ATX台式机箱电脑机箱游戏机箱 支持大板',
+                            zp: '/',
+                            storage: '/',
+                            price: '100',
+                            status: '全新',
+                            link: 'https://detail.tmall.com/item.htm?spm=a230r.1.14.29.192c3d2aFGKgYv&id=45610686421&ns=1&abbucket=15&sku_properties=5919063:6536025'
+                        },
+                    ]
+                }
+            ]
+        },
+        methods: {
+            _renderDetailItem: function (detail) {
+                var html = "";
+                var priceAll = 0;
+                for (var index = 0; index < detail.length; index++) {
+                    var di = detail[index];
+                    priceAll += parseInt(di.price);
+                    html += "<tr><td>" + di.part + "</td><td>" + di.name + "</td><td>" + di.zp + "</td>" +
+                        "<td>" + di.storage + "</td><td>" + di.price + " 元</td><td>" + di.status + "</td>" +
+                        "<td><a target='_blank' href='" + di.link + "'>查看详情</a></td></tr>"
+                }
+
+                html += "<tr><td colspan='4'></td>" +
+                    "<td>" + priceAll + " 元</td><td colspan='2'></td></tr>";
+                return html;
+            },
+            renderPlan: function (plan) {
+                var html = "";
+                for (var index = 0; index < plan.length; index++) {
+                    var p = plan[index];
+                    var itemHtml = "<h2>" + p.title + "</h2>";
+                    itemHtml += "<table cellpadding='1' cellspacing='1'>" +
+                        "<thead><tr><th>名称</th><th>商品</th><th>主频</th><th>容量</th><th>价格</th><th>成色</th><th>链接</th></tr></thead>" +
+                        "<tbody>" + me.methods._renderDetailItem(p.detail) + "</tbody></table>";
+
+                    html += itemHtml;
+                }
+                me.doms.resultDom.innerHTML = html;
+            }
+        }
+    };
+
+    me.init();
+
+
+</script>
+</body>
+</html>

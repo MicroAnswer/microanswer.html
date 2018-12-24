@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- 页面描述 -->
+    <meta name="description" content="欢迎访问Microanswer的网页。你可以留言并参看他的最新作品。"/>
+    <!-- 页面关键词 -->
+    <meta name="keywords"
+          content="Java,Microanswer,answer,范雪蛟,范雪娇,小范阿娇,阿蛟,Micro,JavaScript,开发,Vue,Php,主机,域名,大神,高手,QQ飞车,数独,数独在线计算,在线计算,解答器,数独破解"/>
+    <!-- 网页作者 -->
+    <meta name="author" content="Microanswer, 范雪蛟, microanswer@gmail.com"/>
+    <!-- 搜索引擎抓取 -->
+    <meta name="robots" content="index,follow"/>
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <title>数独解答器JavaScript版本</title>
+    <link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css'>
+    <link rel="stylesheet" href="css/prettify.css">
+    <style>
+        .code-content {
+            margin: 0;
+            padding: .5em;
+        }
+
+        .bodycontent {
+            border-radius: 6px;
+            margin: 15px auto;
+            max-width: 900px;
+            min-width: 500px;
+            overflow: auto;
+            box-shadow: 2px 2px 10px #23241f;
+        }
+
+        .demo {
+            margin: 30px;
+            text-align: center;
+        }
+
+        .suduku {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+            border: 2px solid gray;
+        }
+
+        .sudukucontrol {
+
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+        }
+
+        td {
+            font-size: 20px;
+        }
+
+        tr.sudulineh td {
+            border-bottom: 2px solid gray;
+        !important;
+        }
+
+        .suduku td {
+            height: 35px;
+            width: 35px;
+            border: 1px solid gray;
+            background-color: white;
+        }
+
+        td.sudulines {
+            border-right: 2px solid gray;
+        !important;
+        }
+
+        .sudukucontrol {
+            max-width: 300px;
+            text-align: center;
+        }
+
+        button {
+            display: inline-block;
+            padding: 6px 20px;
+            margin-top: 8px;
+        }
+
+        input {
+            width: 100%;
+            height: 100%;
+            display: block;
+            outline: none;
+            border: none;
+            text-align: center;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .answeritem {
+            display: inline-block;
+            margin: 4px 6px;
+        }
+
+        .answeritem-row {
+            clear: both;
+        }
+
+        .answeritem-col {
+            margin: -1px 0 0 -1px;
+            float: left;
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            border: 1px solid gray;
+            line-height: 15px;
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .spp {
+            margin: -1px;
+        }
+
+        .soo {
+            border-bottom: 1px solid gray;
+        }
+    </style>
+</head>
+<body>
+<div class="demo">
+    <h1>数独计算器</h1>
+    <table class="suduku" cellspacing="0" cellpadding="0">
+        <tbody>
+        <tr>
+            <td><input i="0" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="0" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="0" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="0" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="0" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="0" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="0" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="0" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="0" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr>
+            <td><input i="1" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="1" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="1" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="1" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="1" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="1" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="1" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="1" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="1" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr class="sudulineh">
+            <td><input i="2" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="2" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="2" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="2" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="2" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="2" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="2" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="2" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="2" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr>
+            <td><input i="3" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="3" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="3" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="3" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="3" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="3" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="3" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="3" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="3" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr>
+            <td><input i="4" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="4" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="4" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="4" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="4" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="4" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="4" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="4" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="4" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr class="sudulineh">
+            <td><input i="5" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="5" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="5" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="5" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="5" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="5" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="5" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="5" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="5" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr>
+            <td><input i="6" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="6" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="6" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="6" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="6" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="6" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="6" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="6" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="6" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr>
+            <td><input i="7" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="7" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="7" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="7" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="7" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="7" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="7" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="7" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="7" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        <tr>
+            <td><input i="8" j="0" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="8" j="1" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="8" j="2" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="8" j="3" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="8" j="4" maxlength="1" max="9" min="1" type="number"/></td>
+            <td class="sudulines"><input i="8" j="5" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="8" j="6" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="8" j="7" maxlength="1" max="9" min="1" type="number"/></td>
+            <td><input i="8" j="8" maxlength="1" max="9" min="1" type="number"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="sudukucontrol">
+        <p>你可以直接点击计算将直接开始空数独计算，可行解个数量巨大。建议在方格中输入部分数字或随机产生一个，点击计算，将进行解答。</p>
+        <p style="color: gray;font-size: 11px">如果你输入的数字不合规 (比如同一行出现了相同的两个数字) ，那么数独也将解答不出结果，虽然会尝试去解答。</p>
+        <button id="btnStart">计算</button>
+        <button id="btnReset" disabled>停止</button>
+        <button id="btnClear">清空</button>
+        <button id="btnRandomSudo">随机产生一个数独</button>
+        <button id="helpedMe" disabled>赞</button>
+        <p>已找到<span id="count">0</span>个解</p>
+    </div>
+</div>
+<div id="suduanswer"></div>
+<hr>
+<h1 style="text-align: center">Java版</h1>
+<div class="bodycontent">
+<pre class="code-content prettyprint linenums">
+    <code style="font-family: Hack;font-size: 14px;">
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+/**
+ * 数独解答器。
+ *
+ * @author Microanswer 2018年5月3日14:39:50
+ */
+public class SudoSolver {
+    // 按顺序选取数填写
+    public static final int GET_VALUE_BY_ORDER = 1;
+    // 随机选取数填写
+    public static final int GET_VALUE_BY_RANDOM = 2;
+
+    // 待解答的数独
+    private int[][] originSudo;
+    // 解答数独过程监听器
+    private SudoSolverListener sudoSolverListener;
+
+    // 以指定的数独数组构建数独解答器
+    public SudoSolver(int sudo[][]) {
+        if (sudo == null) {
+            this.originSudo = new int[9][9];
+        } else {
+            this.originSudo = copyArray(sudo);
+        }
+    }
+
+    // 构造一个全是0的空数独，其解的个数量巨大。
+    public SudoSolver() {
+        this(null);
+    }
+
+    public void setSudoSolverListener(SudoSolverListener sudoSolverListener) {
+        this.sudoSolverListener = sudoSolverListener;
+    }
+
+    public SudoSolverListener getSudoSolverListener() {
+        return sudoSolverListener;
+    }
+
+    // 拷贝数组
+    private int[][] copyArray(int[][] src) {
+        int[][] newArray = new int[src.length][];
+        for (int i = 0; i < src.length; i++) {
+            int[] array = new int[src[i].length];
+            for (int j = 0; j < src[i].length; j++) {
+                array[j] = src[i][j];
+            }
+            newArray[i] = array;
+        }
+        return newArray;
+    }
+
+    // 将数独数组转化成String
+    public static String stringSudo(int[][] sudo) {
+        StringBuilder sbu = new StringBuilder();
+        for (int i = 0; i < sudo.length; i++) {
+            sbu.append("[");
+            for (int j = 0; j < sudo[i].length; j++) {
+                sbu.append((sudo[i][j] == 0 ? "□" : sudo[i][j])
+                        + (j < sudo[i].length - 1 ? (" " + (j % 3 == 2 ? " " : "")) : ""));
+            }
+            sbu.append("]\n");
+            if (i % 3 == 2 && i < sudo.length - 1) {
+                sbu.append("\n");
+            }
+        }
+        return sbu.toString();
+    }
+
+    // 打印数独
+    public static void printSudo(int[][] sudo) {
+        System.out.println(stringSudo(sudo));
+    }
+
+    // 获取待解答的原数独
+    public int[][] getOriginSudo() {
+        return originSudo;
+    }
+
+    // 执行数独解析
+    public void findAnswer(SudoSolverListener solverListener) {
+        setSudoSolverListener(solverListener);
+
+        // 如果使用递归的方式来遍历填写到数独，能够简化代码，但是，个人觉得这个东西数据量巨大
+        // 所以，此处使用一个记录器来记录当前尝试填写到了哪一个坐标位置的方式来循环完成，
+        // 减少资源开销
+        LinkedList<IJ> tryHistory = new LinkedList<>();
+
+        // 临时数独数组，每次填写一个值过后，这个数组都会变化
+        int[][] tempSudo = copyArray(originSudo);
+
+        // 继续向下填写状态
+        final int STATUS_KEEPGOING = 1;
+        // 返回上个填写位置状态
+        final int STATUS_BACK = 2;
+
+        // 默认为继续向下填写
+        int status = STATUS_KEEPGOING;
+        // 开始循环寻找答案
+        w:
+        while (true) {
+
+            // 搜寻
+            IJ ij = null;
+
+            if (STATUS_KEEPGOING == status) {
+                ij = getNextEmptyPosition(tempSudo);
+            } else if (STATUS_BACK == status) {
+                ij = tryHistory.get(tryHistory.size() - 1);
+            }
+
+            if (null != ij) {
+
+                if (status == STATUS_KEEPGOING) { // 如果状态为继续往下填写，直接使用可用值填写到数独
+                    Integer nextNumber = ij.nextNumber(); // 获取一个用于填写的数字
+                    if (null == nextNumber) {
+                        // 这个位置的所有数字都被试过了或则这个位置没有适合的数字
+
+                        if (sudoIsTrue(tempSudo)) {
+
+                        } else {
+                            // 数独还未完成，返回上一级处理
+                            status = STATUS_BACK;
+                        }
+                    } else {
+                        // 填写到数独并记录
+                        tempSudo[ij.i][ij.j] = nextNumber;
+                        tryHistory.add(ij);
+                    }
+
+                } else if (status == STATUS_BACK) {// 状态为返回上一级重新填写
+
+                    Integer number = ij.nextNumber();// 获取一个可以填写的数字
+
+                    if (null == number) {
+                        // 所有数字都尝试遍了，或则这儿没有数字可以填写，继续上一步
+                        tempSudo[ij.i][ij.j] = 0;
+                        tryHistory.removeLast();
+                        if (tryHistory.size() == 0) {
+                            // 全部尝试的数字都试完了
+                            onflish();
+                            break;
+                        }
+                        status = STATUS_BACK;
+                    } else {
+                        // 有可以填写的数字, 那就填写吧
+                        tempSudo[ij.i][ij.j] = number;
+                        status = STATUS_KEEPGOING;
+                    }
+                }
+
+            }
+
+            onProgress(tempSudo);
+
+            if (sudoIsTrue(tempSudo)) {
+                boolean end = onFindAnswer(tempSudo);
+
+                if (end) {
+                    onflish();
+                    break;
+                }
+
+                // 找到一个解答，开始另一波搜寻，查找其它答案
+                for (int ind = tryHistory.size() - 1; ind >= 0; ind--) {
+                    IJ ij2 = tryHistory.get(ind);
+                    if (!ij2.hasNext()) {
+                        tryHistory.remove(ind);
+                        tempSudo[ij2.i][ij2.j] = 0;
+                    } else {
+                        // 发现一个尝试中还存在可以继续尝试使用的值，那么就从这个位置继续搜寻答案
+                        status = STATUS_BACK;
+                        continue w;
+                    }
+                }
+                onflish();
+                // 所有解全部找到
+                break;
+
+            } else {
+                if (ij == null) {
+                    // 没有可尝试方案
+                    // 找不到解了
+                    onflish();
+                    break;
+                }
+            }
+        }
+
+    }
+
+    // 数独完全解答完毕后调用
+    protected void onflish() {
+        if (sudoSolverListener != null) {
+            sudoSolverListener.onFlish();
+        }
+    }
+
+    // 数独在解答过程中回调
+    protected void onProgress(int[][] sudo) {
+        if (sudoSolverListener != null) {
+            sudoSolverListener.onProgress(copyArray(sudo));
+        }
+    }
+
+    // 数独在找到任意一个解答的时候回调
+    protected boolean onFindAnswer(int[][] answer) {
+        if (sudoSolverListener != null) {
+            return sudoSolverListener.onAnswerFind(copyArray(answer));
+        }
+        return false;
+    }
+
+    // 获取下一个待填写的位置，没有待填写的位置的时候返回null
+    public IJ getNextEmptyPosition(int[][] sudo) {
+        // 原本是找到一个没有数字的地方就返回这个位置。
+        // 后来发现，这样好像效率并不高
+        //
+        // for (int i = 0; i < sudo.length; i++)
+        //     for (int j = 0; j < sudo[i].length; j++) {
+        //         if (sudo[i][j] == 0) {
+        //             return newIJ(i, j, findUseAbleNumbers(sudo, i, j));
+        //         }
+        //     }
+        // 应该找到所有的空位置，选择能够用尝试填写的数较少的哪一个进行返回
+        IJ useAbleNumbersMostLessIJ = null;
+        for (int i = 0; i < sudo.length; i++)
+            for (int j = 0; j < sudo[i].length; j++) {
+                if (sudo[i][j] == 0) {
+
+                    if (null == useAbleNumbersMostLessIJ) {
+                        useAbleNumbersMostLessIJ = newIJ(i, j, findUseAbleNumbers(sudo, i, j));
+                    } else {
+                        IJ useAbleNumbersIJ = newIJ(i, j, findUseAbleNumbers(sudo, i, j));
+                        if (useAbleNumbersIJ.size() < useAbleNumbersMostLessIJ.size()) {
+                            useAbleNumbersMostLessIJ = useAbleNumbersIJ;
+                        }
+                    }
+                }
+            }
+        return useAbleNumbersMostLessIJ;
+    }
+
+    // 寻找指定位置可以使用的数字
+    public ArrayList<Integer> findUseAbleNumbers(int[][] sudo, int i, int j) {
+        if (sudo[i][j] != 0) {
+            throw new RuntimeException("这个位置已有数字：" + sudo[i][j]);
+        }
+
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for (int n = 1; n <= 9; n++)
+            numbers.add(n);
+
+        // 横排
+        for (int a = 0; a < sudo[i].length; a++) {
+            if (numbers.contains(sudo[i][a]))
+                numbers.remove((Object) sudo[i][a]);
+        }
+
+        // 竖排
+        for (int b = 0; b < sudo.length; b++) {
+            if (numbers.contains(sudo[b][j]))
+                numbers.remove((Object) sudo[b][j]);
+        }
+
+        // 九宫格内
+        // 获取到数独中该位置对应的九宫格
+        int grid[] = getGridArray(sudo, i, j);
+
+        for (int c = 0; c < grid.length; c++) {
+            if (numbers.contains(grid[c]))
+                numbers.remove((Object) grid[c]);
+        }
+
+        return numbers;
+    }
+
+    // 校验数独是否正确
+    public boolean sudoIsTrue(int sudo[][]) {
+        boolean result = false;
+
+        // 先校验数独是否横9个数，竖9个数
+        if (sudo == null) {
+            return result;
+        }
+        int i = 0;
+        for (; i < sudo.length; i++) {
+            if (sudo[i].length != 9) {
+                return result;
+            }
+        }
+
+        if (i != 9) {
+            return result;
+        }
+
+        // 效验数据内容
+
+        // 数独共有3个校验规则
+        // 1、 每横排数字1~9不能重复
+        // 2、每竖排数字1~9不能重复
+        // 3、每九宫格数组1~9不能重复
+
+        w:
+        for (i = 0; i < sudo.length; i++) {
+            for (int j = 0; j < sudo[i].length; j++) {
+                // 校验横排
+                if (isNumberTrueInRow(sudo, i, j)) {
+                    if (isNumberTrueInCol(sudo, i, j)) {
+                        if (isNumberTrueInGrid(sudo, i, j)) {
+                            // 三项校验都通过
+                            result = true;
+                        } else {
+                            // 在九宫格内校验不通过
+                            result = false;
+                            break w;
+                        }
+                    } else {
+                        // 在竖排校验不通过
+                        result = false;
+                        break w;
+                    }
+                } else {
+                    // 在横排校验不通过
+                    result = false;
+                    break w;
+                }
+            }
+        }
+        return result;
+    }
+
+    // 校验某个位置的数字在横排上是否满足正确
+    private boolean isNumberTrueInRow(int[][] sudo, int i, int j) {
+        boolean result = false;
+
+        // 获取到数独中的这一横排
+        int row[] = sudo[i];
+
+        // 获取到这个校验的数字
+        int num = row[j];
+
+        // 如果这个数是0，表示还没填写，返回false
+        if (0 == num) {
+            return result;
+        }
+
+        // 遍历这个横排，没有出现重复数字，视为满足
+        result = numInArrayOnceOrNone(num, row);
+
+        return result;
+    }
+
+    // 校验某个位置的数字在竖排上是否满足正确
+    private boolean isNumberTrueInCol(int[][] sudo, int i, int j) {
+        boolean result = false;
+
+        // 获取到数独中这一竖排
+        int col[] = {sudo[0][j], sudo[1][j], sudo[2][j],
+				sudo[3][j], sudo[4][j], sudo[5][j],
+				sudo[6][j], sudo[7][j],sudo[8][j]};
+
+        // 获取到这个校验的数字
+        int num = col[i];
+
+        // 如果这个数是0，表示还没填写，返回false
+        if (0 == num) {
+            return result;
+        }
+
+        // 遍历这个竖排，没有出现重复数字，视为满足
+        result = numInArrayOnceOrNone(num, col);
+
+        return result;
+    }
+
+    // 校验某个位置的数字在九宫格内是否满足正确
+    private boolean isNumberTrueInGrid(int[][] sudo, int i, int j) {
+        boolean result = false;
+
+        // 获取到数独中该位置对应的九宫格
+        int grid[] = getGridArray(sudo, i, j);
+
+        // 获取到这个校验的数字
+        int num = sudo[i][j];
+
+        // 如果这个数是0，表示还没填写，返回false
+        if (0 == num) {
+            return result;
+        }
+
+        // 遍历这个九宫格，没有出现重复数字，视为满足
+        result = numInArrayOnceOrNone(num, grid);
+
+        return result;
+    }
+
+    // 校验某个数值在数组中是否不存在或者只存在了一次
+    private boolean numInArrayOnceOrNone(int num, int[] array) {
+        int count = 0;
+        if (num == 0) {
+            return false; // 要判断的数是0的话，直接false
+        }
+        for (int i = 0; i < array.length; i++) {
+            if (num == array[i]) {
+                count++;
+            }
+        }
+        return count <= 1;
+    }
+
+    private int[] getGridArray(int[][] sudo, int i, int j) {
+        // 获取到数独中该位置对应的九宫格
+        int grid[] = new int[9];
+
+        if ((0 <= i && i <= 2) && (0 <= j && j <= 2)) {// 左上
+            int index = 0;
+            for (int h = 0; h <= 2; h++) {
+                for (int s = 0; s <= 2; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((3 <= i && i <= 5) && (0 <= j && j <= 2)) { // 左中
+            int index = 0;
+            for (int h = 3; h <= 5; h++) {
+                for (int s = 0; s <= 2; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((6 <= i && i <= 8) && (0 <= j && j <= 2)) { // 左下
+            int index = 0;
+            for (int h = 6; h <= 8; h++) {
+                for (int s = 0; s <= 2; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((0 <= i && i <= 2) && (3 <= j && j <= 5)) {// 中上
+            int index = 0;
+            for (int h = 0; h <= 2; h++) {
+                for (int s = 3; s <= 5; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((3 <= i && i <= 5) && (3 <= j && j <= 5)) {// 中中
+            int index = 0;
+            for (int h = 3; h <= 5; h++) {
+                for (int s = 3; s <= 5; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((6 <= i && i <= 8) && (3 <= j && j <= 5)) {// 中下
+            int index = 0;
+            for (int h = 6; h <= 8; h++) {
+                for (int s = 3; s <= 5; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((0 <= i && i <= 2) && (6 <= j && j <= 8)) {// 右上
+            int index = 0;
+            for (int h = 0; h <= 2; h++) {
+                for (int s = 6; s <= 8; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((3 <= i && i <= 5) && (6 <= j && j <= 8)) {// 右中
+            int index = 0;
+            for (int h = 3; h <= 5; h++) {
+                for (int s = 6; s <= 8; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else if ((6 <= i && i <= 8) && (6 <= j && j <= 8)) {// 右下
+            int index = 0;
+            for (int h = 6; h <= 8; h++) {
+                for (int s = 6; s <= 8; s++) {
+                    grid[index] = sudo[h][s];
+                    index++;
+                }
+            }
+        } else {
+            throw new RuntimeException("到达了不可能到达的位置。");
+        }
+        return grid;
+    }
+
+    // 坐标辅助类
+    private class IJ {
+
+        private int i, j;
+        private int getValueBy = SudoSolver.GET_VALUE_BY_RANDOM;
+        private ArrayList<Integer> useAbleNumbers;
+        private ArrayList<Integer> tryedNumbers;
+
+        private IJ(int i, int j) {
+            this.i = i;
+            this.j = j;
+            tryedNumbers = new ArrayList<>();
+        }
+
+        public void setGetValueBy(int getValueBy) {
+            this.getValueBy = getValueBy;
+        }
+
+        public boolean hasNext() {
+            return useAbleNumbers.size() > 0;
+        }
+
+        public int size() {
+            return useAbleNumbers.size();
+        }
+
+        public Integer nextNumber() {
+            if (useAbleNumbers.size() < 1) {
+                return null;
+            } else {
+                Integer nu = null;
+                if (this.getValueBy == SudoSolver.GET_VALUE_BY_RANDOM) {
+                    int index = (int) Math.floor(Math.random() * useAbleNumbers.size());
+                    nu = useAbleNumbers.remove(index);
+                } else if (this.getValueBy == SudoSolver.GET_VALUE_BY_ORDER) {
+                    nu = useAbleNumbers.remove(0);
+                } else {
+                    nu = useAbleNumbers.remove(0);
+                }
+                tryedNumbers.add(nu);
+                return nu;
+            }
+        }
+
+        public IJ setUseAbleNumbers(ArrayList<Integer> useAbleNumbers) {
+            this.useAbleNumbers = useAbleNumbers;
+            return this;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof IJ) {
+                IJ ij = (IJ) obj;
+                return ij.i == this.i && ij.j == this.j;
+            }
+            return super.equals(obj);
+        }
+    }
+
+    // 创建一个新的IJ坐标对象
+    private IJ newIJ(int i, int j, ArrayList<Integer> useAbleNumbers) {
+        return new IJ(i, j).setUseAbleNumbers(useAbleNumbers);
+    }
+
+    /**
+     * 数独解析监听器
+     *
+     * @author Microanswer
+     */
+    public static interface SudoSolverListener {
+        /**
+         * 当发现一个可行解的时候，该方法被调用。
+         *
+         * @param answer
+         * @return 返回 true 如果有多个解答将不再进行解答， 返回 false 将寻找所有答案
+         */
+        boolean onAnswerFind(int[][] answer);
+
+        void onProgress(int[][] sudo);
+
+        void onFlish();
+    }
+
+    public static void main(String[] args) {
+
+        SudoSolver solver = new SudoSolver(new int[][]{
+                {8, 5, 7, 3, 4, 9, 2, 0, 1},
+                {2, 1, 0, 0, 7, 0, 0, 9, 5},
+                {4, 9, 0, 2, 0, 0, 0, 0, 8},
+                {1, 0, 0, 0, 0, 0, 0, 0, 9},
+                {3, 4, 5, 0, 9, 0, 6, 1, 7},
+                {6, 0, 0, 0, 0, 0, 0, 0, 4},
+                {9, 3, 1, 4, 2, 5, 0, 7, 6},
+                {5, 6, 8, 0, 1, 3, 0, 0, 2},
+                {7, 2, 4, 0, 8, 6, 1, 0, 3}
+        });
+
+        solver.findAnswer(new SudoSolverListener() {
+            @Override
+            public boolean onAnswerFind(int[][] answer) {
+                SudoSolver.printSudo(answer);
+                return false;
+            }
+
+            @Override
+            public void onProgress(int[][] sudo) {
+            }
+
+            @Override
+            public void onFlish() {
+                System.out.println("解答完成");
+            }
+        });
+
+    }
+}
+
+	</code>
+</pre>
+</div>
+
+<h1 style="text-align: center">JavaScript版</h1>
+<div class="bodycontent">
+<pre class="code-content prettyprint linenums">
+    <code style="font-family: Hack;font-size: 14px;">
+    // 取值尝试方式
+    var GET_VALUE_BY_RANDOM = 1; // 随机
+    var GET_VALUE_BY_ORDER = 2; // 按顺序
+
+    var inner_run_dely = 0; // 每次调用settimeout时间间隔
+
+    // 继续向下填写状态
+    var STATUS_KEEPGOING = 1;
+    // 返回上个填写位置状态
+    var STATUS_BACK = 2;
+    // 模拟集合的功能
+    var List = function () {
+        var obj = {};
+        obj._data = [];
+
+        obj.add = function (value) {
+            obj._data.push(value);
+        };
+
+        obj.removeFirst = function () {
+            return obj._data.shift();
+        };
+
+        // 随机移除并返回移除的值
+        obj.removeRandom = function () {
+            // (Math.random() * (y - x)) + x ==> [0, y-x) ==> [x, y)
+            // 产生一个随机数
+            var index = parseInt(Math.random() * (obj._data.length));
+            return obj._data.splice(index, 1)[0];
+        };
+
+        obj.removeLast = function () {
+            return obj._data.pop();
+        };
+
+        // 此方法参数value不是下标，是具体的值
+        obj.remove = function (value) {
+            var index = -1;
+            for (var i = 0; i < obj._data.length; i++) {
+                if (value === obj._data[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index === -1) {
+                return index;
+            }
+            obj._data.splice(index, 1);
+            return index;
+        };
+
+        obj.contains = function (value) {
+            var index = -1;
+            for (var i = 0; i < obj._data.length; i++) {
+                if (value === obj._data[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            return index > -1;
+        };
+        obj.size = function () {
+            return obj._data.length;
+        };
+
+        obj.get = function (index) {
+            return obj._data[index];
+        };
+
+        return obj;
+    };
+
+    // js 版数独计算器
+    var SudoSolver = function (sudo) {
+        if (!sudo) {
+            sudo = [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+        }
+
+        var obj = {};
+
+        // 拷贝数组
+        obj.copyArray = function (srcArray) {
+            var newArray = [];
+            for (var i = 0; i < srcArray.length; i++) {
+                var array = [];
+                for (var j = 0; j < srcArray[i].length; j++) {
+                    array[j] = srcArray[i][j];
+                }
+                newArray[i] = array;
+            }
+            return newArray;
+        };
+        // 待解答的数独
+        obj.originSudo = obj.copyArray(sudo);
+        // 解答数独过程监听器
+        obj.sudoSolverListener = undefined;
+
+        obj.setSudoSolverListener = function (sudoSolverListener) {
+            obj.sudoSolverListener = sudoSolverListener;
+        };
+
+        obj.getSudoSolverListener = function () {
+            return obj.sudoSolverListener;
+        };
+
+        // 获取待解答的原数独
+        obj.getOriginSudo = function () {
+            return obj.originSudo;
+        };
+
+        obj.setSudo = function (sudo) {
+            obj.originSudo = obj.copyArray(sudo);
+        };
+
+        // 终止解答
+        obj.stopFind = function () {
+            obj.__innerRunnParam.kill = true;
+        };
+
+        // 执行数独解析
+        obj.findAnswer = function (solverListener) {
+            obj.setSudoSolverListener(solverListener);
+
+            // 如果使用递归的方式来遍历填写到数独，能够简化代码，但是，个人觉得这个东西数据量巨大
+            // 所以，此处使用一个记录器来记录当前尝试填写到了哪一个坐标位置的方式来循环完成，
+            // 减少资源开销
+            var tryHistory = List();
+
+            // 临时数独数组，每次填写一个值过后，这个数组都会变化
+            var tempSudo = obj.copyArray(obj.originSudo);
+
+            // 开始循环寻找答案
+            obj.__innerRunnParam = {
+                tryHistory: tryHistory,
+                tempSudo: tempSudo,
+                status: STATUS_KEEPGOING,
+                kill: false
+            };
+            obj.__innerRun();
+
+        };
+        obj.__innerRun = function () {
+            var tryHistory = obj.__innerRunnParam.tryHistory;
+            var status = obj.__innerRunnParam.status;
+            var tempSudo = obj.__innerRunnParam.tempSudo;
+            var kill = obj.__innerRunnParam.kill;
+            if (kill) {
+                obj.onflish();
+                return;
+            }
+
+            // 搜寻
+            var ij = null;
+
+            if (STATUS_KEEPGOING === status) {
+                ij = obj.getNextEmptyPosition(tempSudo);
+            } else if (STATUS_BACK === status) {
+                ij = tryHistory.get(tryHistory.size() - 1);
+            }
+
+            if (ij) {
+
+                if (status === STATUS_KEEPGOING) { // 如果状态为继续往下填写，直接使用可用值填写到数独
+                    var nextNumber = ij.nextNumber(); // 获取一个用于填写的数字
+                    if (null == nextNumber) {
+                        // 这个位置的所有数字都被试过了或则这个位置没有适合的数字
+                        if (obj.sudoIsTrue(tempSudo)) {
+
+                        } else {
+                            // 数独还未完成，返回上一级处理
+                            status = STATUS_BACK;
+                        }
+                    } else {
+                        // 填写到数独并记录
+                        tempSudo[ij.i][ij.j] = nextNumber;
+                        tryHistory.add(ij);
+                    }
+
+                } else if (status === STATUS_BACK) {// 状态为返回上一级重新填写
+
+                    var number = ij.nextNumber();// 获取一个可以填写的数字
+
+                    if (null == number) {
+                        // 所有数字都尝试遍了，或则这儿没有数字可以填写，继续上一步
+                        tempSudo[ij.i][ij.j] = 0;
+                        tryHistory.removeLast();
+                        if (tryHistory.size() === 0) {
+                            // 全部尝试的数字都试完了
+                            obj.onflish();
+                            return;
+                        }
+                        status = STATUS_BACK;
+                    } else {
+                        // 有可以填写的数字, 那就填写吧
+                        tempSudo[ij.i][ij.j] = number;
+                        status = STATUS_KEEPGOING;
+                    }
+                }
+
+            }
+
+            obj.onProgress(tempSudo);
+
+            if (obj.sudoIsTrue(tempSudo)) {
+                var end = obj.onFindAnswer(tempSudo);
+
+                if (end) {
+                    obj.onflish();
+                    return;
+                }
+
+                // 找到一个解答，开始另一波搜寻，查找其它答案
+                for (var ind = tryHistory.size() - 1; ind >= 0; ind--) {
+                    var ij2 = tryHistory.get(ind);
+                    if (!ij2.hasNext()) {
+                        tryHistory.remove(ind);
+                        tempSudo[ij2.i][ij2.j] = 0;
+                    } else {
+                        // 发现一个尝试中还存在可以继续尝试使用的值，那么就从这个位置继续搜寻答案
+                        status = STATUS_BACK;
+
+                        obj.__innerRunnParam.tempSudo = tempSudo;
+                        obj.__innerRunnParam.status = status;
+                        obj.__innerRunnParam.tryHistory = tryHistory;
+                        setTimeout(obj.__innerRun, inner_run_dely);
+                        return;
+                    }
+                }
+                obj.onflish();
+                // 所有解全部找到
+                return;
+
+            } else {
+                if (!ij) {
+                    // 没有了尝试方案，找不到解答
+                    obj.onflish();
+                    return;
+                }
+            }
+
+            obj.__innerRunnParam.tempSudo = tempSudo;
+            obj.__innerRunnParam.status = status;
+            obj.__innerRunnParam.tryHistory = tryHistory;
+            setTimeout(obj.__innerRun, inner_run_dely);
+        };
+
+        // 数独完全解答完毕后调用
+        obj.onflish = function () {
+            if (obj.sudoSolverListener) {
+                obj.sudoSolverListener.onFlish();
+            }
+        };
+
+        // 数独在解答过程中回调
+        obj.onProgress = function (sudo) {
+            if (obj.sudoSolverListener != null) {
+                obj.sudoSolverListener.onProgress(obj.copyArray(sudo));
+            }
+        };
+
+        // 数独在找到任意一个解答的时候回调
+        obj.onFindAnswer = function (answer) {
+            obj.lastAnswer = obj.copyArray(answer);
+            if (obj.sudoSolverListener) {
+                return obj.sudoSolverListener.onAnswerFind(obj.lastAnswer);
+            }
+            return false;
+        };
+
+        // 获取下一个待填写的位置，没有待填写的位置的时候返回null
+        obj.getNextEmptyPosition = function (sudo) {
+            // 原本是找到一个没有数字的地方就返回这个位置。
+            // 后来发现，这样好像效率并不高
+            //
+
+            // for (var i = 0; i < sudo.length; i++)
+            //     for (var j = 0; j < sudo[i].length; j++) {
+            //         if (sudo[i][j] === 0) {
+            //             return obj.newIJ(i, j, obj.findUseAbleNumbers(sudo, i, j));
+            //         }
+            //     }
+
+            // 应该找到所有的空位置，选择能够用尝试填写的数较少的哪一个进行返回
+            var useAbleNumbersMostLessIJ = null;
+            for (var i = 0; i < sudo.length; i++)
+                for (var j = 0; j < sudo[i].length; j++) {
+                    if (sudo[i][j] === 0) {
+                        if (!useAbleNumbersMostLessIJ) {
+                            useAbleNumbersMostLessIJ = obj.newIJ(i, j,
+		                                       obj.findUseAbleNumbers(sudo, i, j));
+                        } else {
+                            var useAbleNumbersIJ = obj.newIJ(i, j,
+		                                       obj.findUseAbleNumbers(sudo, i, j));
+                            if (useAbleNumbersIJ.size() < useAbleNumbersMostLessIJ.size()) {
+                                useAbleNumbersMostLessIJ = useAbleNumbersIJ;
+                            }
+                        }
+                    }
+                }
+
+            return useAbleNumbersMostLessIJ;
+        };
+
+        // 寻找指定位置可以使用的数字
+        obj.findUseAbleNumbers = function (sudo, i, j) {
+            if (sudo[i][j] !== 0) {
+                throw new Error("这个位置已有数字：" + sudo[i][j]);
+            }
+
+            var numbers = List();
+            for (var n = 1; n <= 9; n++)
+                numbers.add(n);
+
+            // 横排
+            for (var a = 0; a < sudo[i].length; a++) {
+                if (numbers.contains(sudo[i][a]))
+                    numbers.remove(sudo[i][a]);
+            }
+
+            // 竖排
+            for (var b = 0; b < sudo.length; b++) {
+                if (numbers.contains(sudo[b][j]))
+                    numbers.remove(sudo[b][j]);
+            }
+
+            // 九宫格内
+            // 获取到数独中该位置对应的九宫格
+            var grid = obj.getGridArray(sudo, i, j);
+
+            for (var c = 0; c < grid.length; c++) {
+                if (numbers.contains(grid[c]))
+                    numbers.remove(grid[c]);
+            }
+
+            return numbers;
+        };
+
+        // 校验数独是否正确
+        obj.sudoIsTrue = function (sudo) {
+            var result = false;
+
+            // 先校验数独是否横9个数，竖9个数
+            if (sudo == null) {
+                return result;
+            }
+            var i = 0;
+            for (; i < sudo.length; i++) {
+                if (sudo[i].length !== 9) {
+                    return result;
+                }
+            }
+
+            if (i !== 9) {
+                return result;
+            }
+
+            // 效验数据内容
+
+            // 数独共有3个校验规则
+            // 1、 每横排数字1~9不能重复
+            // 2、每竖排数字1~9不能重复
+            // 3、每九宫格数组1~9不能重复
+
+            w: for (i = 0; i < sudo.length; i++) {
+                for (var j = 0; j < sudo[i].length; j++) {
+                    // 校验横排
+                    if (obj.isNumberTrueInRow(sudo, i, j)) {
+                        if (obj.isNumberTrueInCol(sudo, i, j)) {
+                            if (obj.isNumberTrueInGrid(sudo, i, j)) {
+                                // 三项校验都通过
+                                result = true;
+                            } else {
+                                // 在九宫格内校验不通过
+                                result = false;
+                                break w;
+                            }
+                        } else {
+                            // 在竖排校验不通过
+                            result = false;
+                            break w;
+                        }
+                    } else {
+                        // 在横排校验不通过
+                        result = false;
+                        break w;
+                    }
+                }
+            }
+            return result;
+        };
+
+        // 校验某个位置的数字在横排上是否满足正确
+        obj.isNumberTrueInRow = function (sudo, i, j) {
+            var result = false;
+
+            // 获取到数独中的这一横排
+            var row = sudo[i];
+
+            // 获取到这个校验的数字
+            var num = row[j];
+
+            // 如果这个数是0，表示还没填写，返回false
+            if (0 === num) {
+                return result;
+            }
+
+            // 遍历这个横排，没有出现重复数字，视为满足
+            result = obj.numInArrayOnceOrNone(num, row);
+
+            return result;
+        };
+
+        // 校验某个位置的数字在竖排上是否满足正确
+        obj.isNumberTrueInCol = function (sudo, i, j) {
+            var result = false;
+
+            // 获取到数独中这一竖排
+            var col = [sudo[0][j], sudo[1][j], sudo[2][j],
+                sudo[3][j], sudo[4][j], sudo[5][j],
+                sudo[6][j], sudo[7][j], sudo[8][j]];
+
+            // 获取到这个校验的数字
+            var num = col[i];
+
+            // 如果这个数是0，表示还没填写，返回false
+            if (0 === num) {
+                return result;
+            }
+
+            // 遍历这个竖排，没有出现重复数字，视为满足
+            result = obj.numInArrayOnceOrNone(num, col);
+
+            return result;
+        };
+
+        // 校验某个位置的数字在九宫格内是否满足正确
+        obj.isNumberTrueInGrid = function (sudo, i, j) {
+            var result = false;
+
+            // 获取到数独中该位置对应的九宫格
+            var grid = obj.getGridArray(sudo, i, j);
+
+            // 获取到这个校验的数字
+            var num = sudo[i][j];
+
+            // 如果这个数是0，表示还没填写，返回false
+            if (0 === num) {
+                return result;
+            }
+
+            // 遍历这个九宫格，没有出现重复数字，视为满足
+            result = obj.numInArrayOnceOrNone(num, grid);
+
+            return result;
+        };
+
+        // 校验某个数值在数组中是否不存在或者只存在了一次
+        obj.numInArrayOnceOrNone = function (num, array) {
+            var count = 0;
+            if (num === 0) {
+                return false; // 要判断的数是0的话，直接false
+            }
+            for (var i = 0; i < array.length; i++) {
+                if (num === array[i]) {
+                    count++;
+                }
+            }
+            return count <= 1;
+        };
+
+        obj.getGridArray = function (sudo, i, j) {
+            // 获取到数独中该位置对应的九宫格
+            var grid = [];
+
+            if ((0 <= i && i <= 2) && (0 <= j && j <= 2)) {// 左上
+                var index = 0;
+                for (var h = 0; h <= 2; h++) {
+                    for (var s = 0; s <= 2; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((3 <= i && i <= 5) && (0 <= j && j <= 2)) { // 左中
+                var index = 0;
+                for (var h = 3; h <= 5; h++) {
+                    for (var s = 0; s <= 2; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((6 <= i && i <= 8) && (0 <= j && j <= 2)) { // 左下
+                var index = 0;
+                for (var h = 6; h <= 8; h++) {
+                    for (var s = 0; s <= 2; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((0 <= i && i <= 2) && (3 <= j && j <= 5)) {// 中上
+                var index = 0;
+                for (var h = 0; h <= 2; h++) {
+                    for (var s = 3; s <= 5; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((3 <= i && i <= 5) && (3 <= j && j <= 5)) {// 中中
+                var index = 0;
+                for (var h = 3; h <= 5; h++) {
+                    for (var s = 3; s <= 5; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((6 <= i && i <= 8) && (3 <= j && j <= 5)) {// 中下
+                var index = 0;
+                for (var h = 6; h <= 8; h++) {
+                    for (var s = 3; s <= 5; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((0 <= i && i <= 2) && (6 <= j && j <= 8)) {// 右上
+                var index = 0;
+                for (var h = 0; h <= 2; h++) {
+                    for (var s = 6; s <= 8; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((3 <= i && i <= 5) && (6 <= j && j <= 8)) {// 右中
+                var index = 0;
+                for (var h = 3; h <= 5; h++) {
+                    for (var s = 6; s <= 8; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((6 <= i && i <= 8) && (6 <= j && j <= 8)) {// 右下
+                var index = 0;
+                for (var h = 6; h <= 8; h++) {
+                    for (var s = 6; s <= 8; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else {
+                throw new RuntimeException("到达了不可能到达的位置。");
+            }
+            return grid;
+        };
+
+        // 坐标辅助类
+        var IJ = function (i, j) {
+            var obj = {};
+            obj.getValueBy = GET_VALUE_BY_RANDOM;
+            obj.i = i;
+            obj.j = j;
+            obj.useAbleNumbers = List();
+            obj.tryedNumbers = List();
+
+            obj.hasNext = function () {
+                return obj.useAbleNumbers.size() > 0;
+            };
+
+            obj.nextNumber = function () {
+                if (obj.useAbleNumbers.size() < 1) {
+                    return null;
+                } else {
+                    // 从可用数据集合里面取第一个数 , 【ps:得到解的快慢就取决于这个地方取到的数字是否正确】
+                    var nu;
+                    if (obj.getValueBy === GET_VALUE_BY_ORDER) {// 按顺序获取一个数字
+                        nu = obj.useAbleNumbers.removeFirst();
+                    } else if (obj.getValueBy === GET_VALUE_BY_RANDOM) {// 随机取一个数字
+                        nu = obj.useAbleNumbers.removeRandom();
+                    } else {
+                        nu = obj.useAbleNumbers.removeFirst(); // 没有指定的时候，使用按顺序获取
+                    }
+                    obj.tryedNumbers.add(nu);
+                    return nu;
+                }
+            };
+
+            obj.setUseAbleNumbers = function (useAbleNumbers) {
+                obj.useAbleNumbers = useAbleNumbers;
+                return obj;
+            };
+
+            obj.size = function () {
+                return obj.useAbleNumbers.size();
+            };
+
+            return obj;
+        };
+
+        // 创建一个新的IJ坐标对象
+        obj.newIJ = function (i, j, useAbleNumbers) {
+            return IJ(i, j).setUseAbleNumbers(useAbleNumbers);
+        };
+
+        return obj;
+    };
+</code>
+</pre>
+</div>
+<script src="js/moment.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/store.min.js"></script>
+<script src="js/prettify.js"></script>
+<script>"use strict";
+(function (window) {
+    // 取值尝试方式
+    var GET_VALUE_BY_RANDOM = 1; // 随机
+    var GET_VALUE_BY_ORDER = 2; // 按顺序
+
+    var inner_run_dely = 0; // 每次调用settimeout时间间隔
+
+    // 继续向下填写状态
+    var STATUS_KEEPGOING = 1;
+    // 返回上个填写位置状态
+    var STATUS_BACK = 2;
+    // 模拟集合的功能
+    var List = function () {
+        var obj = {};
+        obj._data = [];
+
+        obj.add = function (value) {
+            obj._data.push(value);
+        };
+
+        obj.removeFirst = function () {
+            return obj._data.shift();
+        };
+
+        // 随机移除并返回移除的值
+        obj.removeRandom = function () {
+            // (Math.random() * (y - x)) + x ==> [0, y-x) ==> [x, y)
+            // 产生一个随机数
+            var index = parseInt(Math.random() * (obj._data.length));
+            return obj._data.splice(index, 1)[0];
+        };
+
+        obj.removeLast = function () {
+            return obj._data.pop();
+        };
+
+        // 此方法参数value不是下标，是具体的值
+        obj.remove = function (value) {
+            var index = -1;
+            for (var i = 0; i < obj._data.length; i++) {
+                if (value === obj._data[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index === -1) {
+                return index;
+            }
+            obj._data.splice(index, 1);
+            return index;
+        };
+
+        obj.contains = function (value) {
+            var index = -1;
+            for (var i = 0; i < obj._data.length; i++) {
+                if (value === obj._data[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            return index > -1;
+        };
+        obj.size = function () {
+            return obj._data.length;
+        };
+
+        obj.get = function (index) {
+            return obj._data[index];
+        };
+
+        return obj;
+    };
+
+    // js 版数独计算器
+    var SudoSolver = function (sudo) {
+        if (!sudo) {
+            sudo = [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+        }
+
+        var obj = {};
+
+        // 拷贝数组
+        obj.copyArray = function (srcArray) {
+            var newArray = [];
+            for (var i = 0; i < srcArray.length; i++) {
+                var array = [];
+                for (var j = 0; j < srcArray[i].length; j++) {
+                    array[j] = srcArray[i][j];
+                }
+                newArray[i] = array;
+            }
+            return newArray;
+        };
+        // 待解答的数独
+        obj.originSudo = obj.copyArray(sudo);
+        // 解答数独过程监听器
+        obj.sudoSolverListener = undefined;
+
+        obj.setSudoSolverListener = function (sudoSolverListener) {
+            obj.sudoSolverListener = sudoSolverListener;
+        };
+
+        obj.getSudoSolverListener = function () {
+            return obj.sudoSolverListener;
+        };
+
+        // 获取待解答的原数独
+        obj.getOriginSudo = function () {
+            return obj.originSudo;
+        };
+
+        obj.setSudo = function (sudo) {
+            obj.originSudo = obj.copyArray(sudo);
+        };
+
+        // 终止解答
+        obj.stopFind = function () {
+            obj.__innerRunnParam.kill = true;
+        };
+
+        // 执行数独解析
+        obj.findAnswer = function (solverListener) {
+            obj.setSudoSolverListener(solverListener);
+
+            // 如果使用递归的方式来遍历填写到数独，能够简化代码，但是，个人觉得这个东西数据量巨大
+            // 所以，此处使用一个记录器来记录当前尝试填写到了哪一个坐标位置的方式来循环完成，
+            // 减少资源开销
+            var tryHistory = List();
+
+            // 临时数独数组，每次填写一个值过后，这个数组都会变化
+            var tempSudo = obj.copyArray(obj.originSudo);
+
+            // 去除上次的正确答案
+            obj.lastAnswer = null;
+
+            // 开始循环寻找答案
+            obj.__innerRunnParam = {
+                tryHistory: tryHistory,
+                tempSudo: tempSudo,
+                status: STATUS_KEEPGOING,
+                kill: false
+            };
+            obj.__innerRun();
+
+        };
+        obj.__innerRun = function () {
+            var tryHistory = obj.__innerRunnParam.tryHistory;
+            var status = obj.__innerRunnParam.status;
+            var tempSudo = obj.__innerRunnParam.tempSudo;
+            var kill = obj.__innerRunnParam.kill;
+            if (kill) {
+                obj.onflish();
+                return;
+            }
+
+            // 搜寻
+            var ij = null;
+
+            if (STATUS_KEEPGOING === status) {
+                ij = obj.getNextEmptyPosition(tempSudo);
+            } else if (STATUS_BACK === status) {
+                ij = tryHistory.get(tryHistory.size() - 1);
+            }
+
+            if (ij) {
+
+                if (status === STATUS_KEEPGOING) { // 如果状态为继续往下填写，直接使用可用值填写到数独
+                    var nextNumber = ij.nextNumber(); // 获取一个用于填写的数字
+                    if (null == nextNumber) {
+                        // 这个位置的所有数字都被试过了或则这个位置没有适合的数字
+                        if (obj.sudoIsTrue(tempSudo)) {
+
+                        } else {
+                            // 数独还未完成，返回上一级处理
+                            status = STATUS_BACK;
+                        }
+                    } else {
+                        // 填写到数独并记录
+                        tempSudo[ij.i][ij.j] = nextNumber;
+                        tryHistory.add(ij);
+                    }
+
+                } else if (status === STATUS_BACK) {// 状态为返回上一级重新填写
+
+                    var number = ij.nextNumber();// 获取一个可以填写的数字
+
+                    if (null == number) {
+                        // 所有数字都尝试遍了，或则这儿没有数字可以填写，继续上一步
+                        tempSudo[ij.i][ij.j] = 0;
+                        tryHistory.removeLast();
+                        if (tryHistory.size() === 0) {
+                            // 全部尝试的数字都试完了
+                            obj.onflish();
+                            return;
+                        }
+                        status = STATUS_BACK;
+                    } else {
+                        // 有可以填写的数字, 那就填写吧
+                        tempSudo[ij.i][ij.j] = number;
+                        status = STATUS_KEEPGOING;
+                    }
+                }
+
+            }
+
+            obj.onProgress(tempSudo);
+
+            if (obj.sudoIsTrue(tempSudo)) {
+                var end = obj.onFindAnswer(tempSudo);
+
+                if (end) {
+                    obj.onflish();
+                    return;
+                }
+
+                // 找到一个解答，开始另一波搜寻，查找其它答案
+                for (var ind = tryHistory.size() - 1; ind >= 0; ind--) {
+                    var ij2 = tryHistory.get(ind);
+                    if (!ij2.hasNext()) {
+                        tryHistory.remove(ind);
+                        tempSudo[ij2.i][ij2.j] = 0;
+                    } else {
+                        // 发现一个尝试中还存在可以继续尝试使用的值，那么就从这个位置继续搜寻答案
+                        status = STATUS_BACK;
+
+                        obj.__innerRunnParam.tempSudo = tempSudo;
+                        obj.__innerRunnParam.status = status;
+                        obj.__innerRunnParam.tryHistory = tryHistory;
+                        setTimeout(obj.__innerRun, inner_run_dely);
+                        return;
+                    }
+                }
+                obj.onflish();
+                // 所有解全部找到
+                return;
+
+            } else {
+                if (!ij) {
+                    // 没有了尝试方案，找不到解答
+                    obj.onflish();
+                    return;
+                }
+            }
+
+            obj.__innerRunnParam.tempSudo = tempSudo;
+            obj.__innerRunnParam.status = status;
+            obj.__innerRunnParam.tryHistory = tryHistory;
+            setTimeout(obj.__innerRun, inner_run_dely);
+        };
+
+        // 数独完全解答完毕后调用
+        obj.onflish = function () {
+            if (obj.sudoSolverListener) {
+                obj.sudoSolverListener.onFlish();
+            }
+        };
+
+        // 数独在解答过程中回调
+        obj.onProgress = function (sudo) {
+            if (obj.sudoSolverListener != null) {
+                obj.sudoSolverListener.onProgress(obj.copyArray(sudo));
+            }
+        };
+
+        // 数独在找到任意一个解答的时候回调
+        obj.onFindAnswer = function (answer) {
+            obj.lastAnswer = obj.copyArray(answer);
+            if (obj.sudoSolverListener) {
+                return obj.sudoSolverListener.onAnswerFind(obj.lastAnswer);
+            }
+            return false;
+        };
+
+        // 获取下一个待填写的位置，没有待填写的位置的时候返回null
+        obj.getNextEmptyPosition = function (sudo) {
+            // 原本是找到一个没有数字的地方就返回这个位置。
+            // 后来发现，这样好像效率并不高
+            //
+
+            // for (var i = 0; i < sudo.length; i++)
+            //     for (var j = 0; j < sudo[i].length; j++) {
+            //         if (sudo[i][j] === 0) {
+            //             return obj.newIJ(i, j, obj.findUseAbleNumbers(sudo, i, j));
+            //         }
+            //     }
+
+            // 应该找到所有的空位置，选择能够用尝试填写的数较少的哪一个进行返回
+            var useAbleNumbersMostLessIJ = null;
+            for (var i = 0; i < sudo.length; i++)
+                for (var j = 0; j < sudo[i].length; j++) {
+                    if (sudo[i][j] === 0) {
+
+                        if (!useAbleNumbersMostLessIJ) {
+                            useAbleNumbersMostLessIJ = obj.newIJ(i, j, obj.findUseAbleNumbers(sudo, i, j));
+                        } else {
+                            var useAbleNumbersIJ = obj.newIJ(i, j, obj.findUseAbleNumbers(sudo, i, j));
+                            if (useAbleNumbersIJ.size() < useAbleNumbersMostLessIJ.size()) {
+                                useAbleNumbersMostLessIJ = useAbleNumbersIJ;
+                            }
+                        }
+                    }
+                }
+
+            return useAbleNumbersMostLessIJ;
+        };
+
+        // 寻找指定位置可以使用的数字
+        obj.findUseAbleNumbers = function (sudo, i, j) {
+            if (sudo[i][j] !== 0) {
+                throw new Error("这个位置已有数字：" + sudo[i][j]);
+            }
+
+            var numbers = List();
+            for (var n = 1; n <= 9; n++)
+                numbers.add(n);
+
+            // 横排
+            for (var a = 0; a < sudo[i].length; a++) {
+                if (numbers.contains(sudo[i][a]))
+                    numbers.remove(sudo[i][a]);
+            }
+
+            // 竖排
+            for (var b = 0; b < sudo.length; b++) {
+                if (numbers.contains(sudo[b][j]))
+                    numbers.remove(sudo[b][j]);
+            }
+
+            // 九宫格内
+            // 获取到数独中该位置对应的九宫格
+            var grid = obj.getGridArray(sudo, i, j);
+
+            for (var c = 0; c < grid.length; c++) {
+                if (numbers.contains(grid[c]))
+                    numbers.remove(grid[c]);
+            }
+
+            return numbers;
+        };
+
+        // 校验数独是否正确
+        obj.sudoIsTrue = function (sudo) {
+            var result = false;
+
+            // 先校验数独是否横9个数，竖9个数
+            if (sudo == null) {
+                return result;
+            }
+            var i = 0;
+            for (; i < sudo.length; i++) {
+                if (sudo[i].length !== 9) {
+                    return result;
+                }
+            }
+
+            if (i !== 9) {
+                return result;
+            }
+
+            // 效验数据内容
+
+            // 数独共有3个校验规则
+            // 1、 每横排数字1~9不能重复
+            // 2、每竖排数字1~9不能重复
+            // 3、每九宫格数组1~9不能重复
+
+            w: for (i = 0; i < sudo.length; i++) {
+                for (var j = 0; j < sudo[i].length; j++) {
+                    // 校验横排
+                    if (obj.isNumberTrueInRow(sudo, i, j)) {
+                        if (obj.isNumberTrueInCol(sudo, i, j)) {
+                            if (obj.isNumberTrueInGrid(sudo, i, j)) {
+                                // 三项校验都通过
+                                result = true;
+                            } else {
+                                // 在九宫格内校验不通过
+                                result = false;
+                                break w;
+                            }
+                        } else {
+                            // 在竖排校验不通过
+                            result = false;
+                            break w;
+                        }
+                    } else {
+                        // 在横排校验不通过
+                        result = false;
+                        break w;
+                    }
+                }
+            }
+            return result;
+        };
+
+        // 校验某个位置的数字在横排上是否满足正确
+        obj.isNumberTrueInRow = function (sudo, i, j) {
+            var result = false;
+
+            // 获取到数独中的这一横排
+            var row = sudo[i];
+
+            // 获取到这个校验的数字
+            var num = row[j];
+
+            // 如果这个数是0，表示还没填写，返回false
+            if (0 === num) {
+                return result;
+            }
+
+            // 遍历这个横排，没有出现重复数字，视为满足
+            result = obj.numInArrayOnceOrNone(num, row);
+
+            return result;
+        };
+
+        // 校验某个位置的数字在竖排上是否满足正确
+        obj.isNumberTrueInCol = function (sudo, i, j) {
+            var result = false;
+
+            // 获取到数独中这一竖排
+            var col = [sudo[0][j], sudo[1][j], sudo[2][j],
+                sudo[3][j], sudo[4][j], sudo[5][j],
+                sudo[6][j], sudo[7][j], sudo[8][j]];
+
+            // 获取到这个校验的数字
+            var num = col[i];
+
+            // 如果这个数是0，表示还没填写，返回false
+            if (0 === num) {
+                return result;
+            }
+
+            // 遍历这个竖排，没有出现重复数字，视为满足
+            result = obj.numInArrayOnceOrNone(num, col);
+
+            return result;
+        };
+
+        // 校验某个位置的数字在九宫格内是否满足正确
+        obj.isNumberTrueInGrid = function (sudo, i, j) {
+            var result = false;
+
+            // 获取到数独中该位置对应的九宫格
+            var grid = obj.getGridArray(sudo, i, j);
+
+            // 获取到这个校验的数字
+            var num = sudo[i][j];
+
+            // 如果这个数是0，表示还没填写，返回false
+            if (0 === num) {
+                return result;
+            }
+
+            // 遍历这个九宫格，没有出现重复数字，视为满足
+            result = obj.numInArrayOnceOrNone(num, grid);
+
+            return result;
+        };
+
+        // 校验某个数值在数组中是否不存在或者只存在了一次
+        obj.numInArrayOnceOrNone = function (num, array) {
+            var count = 0;
+            if (num === 0) {
+                return false; // 要判断的数是0的话，直接false
+            }
+            for (var i = 0; i < array.length; i++) {
+                if (num === array[i]) {
+                    count++;
+                }
+            }
+            return count <= 1;
+        };
+
+        obj.getGridArray = function (sudo, i, j) {
+            // 获取到数独中该位置对应的九宫格
+            var grid = [];
+
+            if ((0 <= i && i <= 2) && (0 <= j && j <= 2)) {// 左上
+                var index = 0;
+                for (var h = 0; h <= 2; h++) {
+                    for (var s = 0; s <= 2; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((3 <= i && i <= 5) && (0 <= j && j <= 2)) { // 左中
+                var index = 0;
+                for (var h = 3; h <= 5; h++) {
+                    for (var s = 0; s <= 2; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((6 <= i && i <= 8) && (0 <= j && j <= 2)) { // 左下
+                var index = 0;
+                for (var h = 6; h <= 8; h++) {
+                    for (var s = 0; s <= 2; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((0 <= i && i <= 2) && (3 <= j && j <= 5)) {// 中上
+                var index = 0;
+                for (var h = 0; h <= 2; h++) {
+                    for (var s = 3; s <= 5; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((3 <= i && i <= 5) && (3 <= j && j <= 5)) {// 中中
+                var index = 0;
+                for (var h = 3; h <= 5; h++) {
+                    for (var s = 3; s <= 5; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((6 <= i && i <= 8) && (3 <= j && j <= 5)) {// 中下
+                var index = 0;
+                for (var h = 6; h <= 8; h++) {
+                    for (var s = 3; s <= 5; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((0 <= i && i <= 2) && (6 <= j && j <= 8)) {// 右上
+                var index = 0;
+                for (var h = 0; h <= 2; h++) {
+                    for (var s = 6; s <= 8; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((3 <= i && i <= 5) && (6 <= j && j <= 8)) {// 右中
+                var index = 0;
+                for (var h = 3; h <= 5; h++) {
+                    for (var s = 6; s <= 8; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else if ((6 <= i && i <= 8) && (6 <= j && j <= 8)) {// 右下
+                var index = 0;
+                for (var h = 6; h <= 8; h++) {
+                    for (var s = 6; s <= 8; s++) {
+                        grid[index] = sudo[h][s];
+                        index++;
+                    }
+                }
+            } else {
+                throw new RuntimeException("到达了不可能到达的位置。");
+            }
+            return grid;
+        };
+
+        // 坐标辅助类
+        var IJ = function (i, j) {
+            var obj = {};
+            obj.getValueBy = GET_VALUE_BY_RANDOM;
+            obj.i = i;
+            obj.j = j;
+            obj.useAbleNumbers = List();
+            obj.tryedNumbers = List();
+
+            obj.hasNext = function () {
+                return obj.useAbleNumbers.size() > 0;
+            };
+
+            obj.nextNumber = function () {
+                if (obj.useAbleNumbers.size() < 1) {
+                    return null;
+                } else {
+                    // 从可用数据集合里面取第一个数 , 【ps:得到解的快慢就取决于这个地方取到的数字是否正确】
+                    var nu;
+                    if (obj.getValueBy === GET_VALUE_BY_ORDER) {// 按顺序获取一个数字
+                        nu = obj.useAbleNumbers.removeFirst();
+                    } else if (obj.getValueBy === GET_VALUE_BY_RANDOM) {// 随机取一个数字
+                        nu = obj.useAbleNumbers.removeRandom();
+                    } else {
+                        nu = obj.useAbleNumbers.removeFirst(); // 没有指定的时候，使用按顺序获取
+                    }
+                    obj.tryedNumbers.add(nu);
+                    return nu;
+                }
+            };
+
+            obj.setUseAbleNumbers = function (useAbleNumbers) {
+                obj.useAbleNumbers = useAbleNumbers;
+                return obj;
+            };
+
+            obj.size = function () {
+                return obj.useAbleNumbers.size();
+            };
+
+            return obj;
+        };
+
+        // 创建一个新的IJ坐标对象
+        obj.newIJ = function (i, j, useAbleNumbers) {
+            return IJ(i, j).setUseAbleNumbers(useAbleNumbers);
+        };
+
+        return obj;
+    };
+
+    var me = {
+        init: function () {
+            prettyPrint(); // 格式化代码显示
+
+            me.doms.btnStart.on("click", me.methods.onBtnStartClick);
+            me.doms.btnReset.on("click", me.methods.onBtnRestClick);
+            me.doms.btnClear.on("click", me.methods.onBtnClearClick);
+            me.doms.btnRandomSudo.on("click", me.methods.onBtnRandomSudoClick);
+
+            // 上一次赞赏是 2 小时以内，不让用户再次赞赏
+            var lastliketimeEnd = moment((store.get('lastliketime') || 0) + (2 * 3600 * 1000));
+            var now = moment();
+            me.datas.canLike = now.isAfter(lastliketimeEnd);
+            if (!me.datas.canLike) {
+                me.doms.helpedMe.attr("disabled", true);
+                me.doms.helpedMe.attr("title", "你在不久前就已经赞过了");
+            } else {
+                me.doms.helpedMe.attr("disabled", false);
+                me.doms.helpedMe.attr("title", "赞一下");
+                me.doms.helpedMe.on("click", me.methods.onHelpedMeClick);
+            }
+
+            // 请求赞个数
+            me.methods.requestZanCount();
+        },
+        doms: {
+            inputs: $("input").css("font-size", "20px"),
+            btnStart: $("#btnStart"),
+            count: $("#count"),
+            btnReset: $("#btnReset"),
+            suduanswer: $("#suduanswer"),
+            btnClear: $("#btnClear"),
+            btnRandomSudo: $("#btnRandomSudo"),
+            helpedMe: $("#helpedMe")
+        },
+        datas: {
+            count: 0,
+            sudosolver: null,
+            canLike: false
+        },
+        methods: {
+            onBtnStartClick: function () {
+
+                var sudo = [
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+                for (var index = 0; index < me.doms.inputs.length; index++) {
+                    var inp = $(me.doms.inputs[index]);
+                    var value = parseInt(inp.val() || 0);
+                    var i = parseInt(inp.attr('i'));
+                    var j = parseInt(inp.attr('j'));
+                    if (value > 9) {
+                        alert("位置 [" + (i + 1) + "," + (j + 1) + "] 最大只能输入 9 ");
+                        return;
+                    }
+                    if (value === 0) {
+                        inp.css("color", "blue");
+                    } else {
+                        inp.css("color", "black");
+                        inp.css("font-weight", "bold");
+                    }
+                    sudo[i][j] = value;
+                }
+                if (!me.datas.sudosolver) {
+                    me.datas.sudosolver = SudoSolver();
+                }
+
+                me.datas.count = 0;
+                me.methods.renderCount();
+
+                // 开始计算后， 不允许再点击开始，不允许再点击清空
+                me.doms.btnStart.attr("disabled", true);
+                me.doms.btnClear.attr("disabled", true);
+                me.doms.btnReset.attr("disabled", false);
+                me.doms.btnRandomSudo.attr("disabled", true);
+
+                me.doms.suduanswer.html("");
+
+                me.datas.sudosolver.setSudo(sudo);
+                me.datas.sudosolver.findAnswer({
+                    onAnswerFind: function (answer) {
+                        me.datas.count++;
+                        me.methods.renderCount();
+                        me.methods.renderAnswer(answer);
+                    },
+                    onProgress: function (sudo) {
+                        me.methods.renderSudo(sudo);
+                    },
+                    onFlish: function () {
+                        console.log("计算结束");
+                        // 计算完成后，可以再次点击开始
+                        me.doms.btnStart.attr("disabled", false);
+                        me.doms.btnClear.attr("disabled", false);
+                        me.doms.btnReset.attr("disabled", true);
+                        if (me.datas.sudosolver && me.datas.sudosolver.lastAnswer) {
+                            me.methods.renderSudo(me.datas.sudosolver.lastAnswer);
+                        }
+                    }
+                });
+
+            },
+            onBtnClearClick: function () {
+                me.doms.inputs.css("color", "black").css("font-weight", "normal");
+                // 把所有的输入框全部置空
+                for (var i = 0; i < me.doms.inputs.length; i++) {
+                    me.doms.inputs[i].value = "";
+                }
+                me.doms.btnRandomSudo.attr("disabled", false);
+            },
+            onBtnRestClick: function () {
+                if (me.datas.sudosolver) {
+                    me.datas.sudosolver.stopFind();
+                }
+                me.datas.sudosolver = undefined;
+                me.doms.btnStart.attr("disabled", false);
+                me.doms.btnClear.attr("disabled", false);
+                me.doms.btnReset.attr("disabled", true);
+            },
+            renderCount: function () {
+                me.doms.count.text(me.datas.count);
+            },
+            renderSudo: function (sudo) {
+                var index = 0;
+                for (var i = 0; i < sudo.length; i++) {
+                    for (var j = 0; j < sudo[i].length; j++) {
+                        me.doms.inputs[index].value = sudo[i][j] === 0 ? "" : sudo[i][j];
+                        index++;
+                    }
+                }
+            },
+            renderAnswer: function (answer) {
+                var i = 0;
+                var html = "<div class='answeritem'>";
+                for (var index = 0; index < answer.length; index++) {
+                    var classnam1 = "answeritem-row";
+                    if (index === 3 || index === 6) {
+                        classnam1 += " soo";
+                    }
+                    html += "<div class='" + classnam1 + "'>";
+                    for (var jndex = 0; jndex < answer[index].length; jndex++) {
+                        var className = "answeritem-col ";
+                        if (jndex === 2 || jndex === 5) {
+                            className += " spp";
+                        }
+                        html += "<span class='" + className + "' style='color:" + me.doms.inputs[i].style.color + "'>" + answer[index][jndex] + "</span>";
+
+                        i++;
+                    }
+                    html += "</div>";
+                }
+                html += "</div>";
+                me.doms.suduanswer.append(html);
+            },
+            onBtnRandomSudoClick: function () {
+                me.methods.renderARandomSudo(81 - 30);
+            },
+            // 产生一个随机的数度 numberCount = 要随机去除的数字个数
+            renderARandomSudo: function (numberCount) {
+                var sudo = SudoSolver();
+                sudo.findAnswer({
+                    onAnswerFind: function (answer) {
+                        return true;
+                    },
+                    onProgress: function () {
+                    },
+                    onFlish: function () {
+                        var randomSudu = sudo.lastAnswer;
+                        var randomSuduArray = [];
+                        for (var i = 0; i < randomSudu.length; i++) {
+                            for (var j = 0; j < randomSudu[i].length; j++) {
+                                randomSuduArray.push(randomSudu[i][j]);
+                            }
+                        }
+                        // 将数独中去除 numberCount 个数字
+                        for (var count = 0; count < numberCount; count++) {
+                            var num = 0;
+                            while (num === 0) {
+                                var index = parseInt(Math.random() * 81);
+                                num = randomSuduArray[index];
+                                randomSuduArray[index] = 0;
+                            }
+                        }
+                        // 将结果显示到界面
+                        for (var i = 0; i < me.doms.inputs.length; i++) {
+                            me.doms.inputs[i].value = randomSuduArray[i] === 0 ? "" : randomSuduArray[i];
+                        }
+                    }
+                })
+            },
+            // 点击赞
+            onHelpedMeClick: function () {
+                if (!me.datas.canLike) {
+                    return;
+                }
+                // 发送一个统计到服务器
+                $.ajax({
+                    url: "/api/common.php",
+                    type: "POST",
+                    data: JSON.stringify({method: "sudoSolverHelpedMe"}),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    error: function (xMLHttpRequest, errStr, exception) {
+                        me.doms.helpedMe.text("谢谢");
+                        me.doms.helpedMe.attr("disabled", true);
+                        me.datas.canLike = false;
+                        store.set('lastliketime', 0);
+                        console.log(errStr + "[" + xMLHttpRequest.status + "][" + exception.message + "]");
+                    },
+                    success: function (result) {
+                        me.doms.helpedMe.text("谢谢");
+                        me.doms.helpedMe.attr("disabled", true);
+                        me.doms.helpedMe.attr("title", "赞成功了");
+                        me.datas.canLike = false;
+                        store.set('lastliketime', new Date().getTime());
+                        console.log(result);
+                    }
+                })
+            },
+            // 获取所有赞的个数
+            requestZanCount: function () {
+                $.ajax({
+                    url: "/api/common.php",
+                    type: "POST",
+                    data: JSON.stringify({
+                        method: "sudoSolverZanCount"
+                    }),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    error: function (xMLHttpRequest, errStr, exception) {
+                        console.log("[获取赞个数出错]：" + errStr + "[" + xMLHttpRequest.status + "][" + exception.message + "]");
+                    },
+                    success: function (result) {
+                        console.log(result);
+                        me.doms.helpedMe.text("赞(" + (result.data.zanCount || 0) + ")");
+                    }
+                })
+            }
+        }
+    };
+    me.init();
+})(window);
+</script>
+</body>
+</html>

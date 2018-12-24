@@ -1,0 +1,153 @@
+.btn {
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 3px 6px;
+    display: inline-block
+}
+
+.btn:active, .btn:hover {
+    color: #0D47A1;
+    text-decoration: underline;
+}
+
+.dot {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 4px;
+    vertical-align: middle;
+    background-color: #000000;
+}
+
+div.card-box {
+
+}
+
+div.card {
+    position: relative;
+    width: 90mm;
+    height: 54mm;
+    margin: 0 auto;
+    border-radius: 6px;
+    font-family: '思源黑体 CN Normal', 'Hiragino', '微软雅黑', sans-serif;
+
+    -webkit-transition: linear 400ms;
+    -moz-transition: linear 400ms;
+    -ms-transition: linear 400ms;
+    -o-transition: linear 400ms;
+    transition: linear 400ms;
+
+    -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+div.card div.front,
+div.card div.back {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: 1mm 1mm 10mm 0 rgba(0, 0, 0, 0.2);
+    border-radius: 2.2mm;
+
+    background-image: linear-gradient(190deg, #6a6a6a, black);
+    -webkit-background-image: linear-gradient(190deg, #6a6a6a, black);
+    -webkit-background-image: -webkit-linear-gradient(190deg, #6a6a6a, black);
+    -ms-background-image: -ms-linear-gradient(190deg, #6a6a6a, black);
+    background-size: cover;
+    -webkit-background-size: cover;
+    -ms-background-size: cover;
+    overflow: hidden;
+}
+
+div.card div.back {
+    -moz-transform: rotateY(180deg) translateZ(1mm);
+    -o-transform: rotateY(180deg) translateZ(1mm);
+    transform: rotateY(180deg) translateZ(1mm);
+    -webkit-transform: rotateY(180deg) translateZ(1mm);
+    -ms-transform: rotateY(180deg) translateZ(1mm);
+}
+
+div.card div.front div.nickname {
+    font-size: 6mm;
+    line-height: 6.5mm;
+    color: white;
+    font-weight: bold;
+    margin: 4.5mm 0 0 6mm;
+}
+
+div.card div.front div.signature {
+    margin-left: 6mm;
+    margin-top: 1mm;
+    font-size: 3.5mm;
+    color: #adadad;
+}
+
+div.card div.front img.headimg {
+    width: 8mm;
+    height: 8mm;
+    border-radius: 50%;
+}
+
+div.card div.front div.name {
+    color: #fff;
+    font-size: 3.5mm;
+    line-height: 3.5mm;
+    margin-right: 6mm;
+    margin-left: 3mm;
+}
+
+div.card div.front div.email {
+    color: #fff;
+    font-size: 3.5mm;
+    margin: 0 6mm 0 3mm;
+}
+
+div.card div.front div.email a.zan {
+    color: #d9d9d9;
+    font-size: 2.5mm;
+    text-decoration: none;
+}
+
+div.card div.front div.email a.dis {
+    color: #4b4b4b;
+}
+
+div.card.showback {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+div.card div.back div.aa {
+    font-size: 3.5mm;
+    margin-top: 2.5mm
+}
+
+div.card div.back div.bb {
+    line-height: 4.0mm;
+    color: #b5b5b5;
+}
+
+.beian-foot {
+    position: fixed;
+    padding: 5px 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+.pay-dialog {
+    background-color: transparent;
+}
+.pay-dialog .layui-layer-content{
+    border-radius: 6px;!important;
+    overflow: hidden;
+}

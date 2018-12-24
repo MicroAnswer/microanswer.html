@@ -1,0 +1,232 @@
+body {/*
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform: rotateY(-45deg) rotateX(35deg);
+    -moz-transform: rotateY(-45deg) rotateX(35deg);
+    -ms-transform: rotateY(-45deg) rotateX(35deg);
+    -o-transform: rotateY(-45deg) rotateX(35deg);
+    transform: rotateY(-45deg) rotateX(35deg);*/
+}
+
+.banner-3d {
+    position: relative;
+    margin: 150px auto 20px auto;
+    width: 800px;
+    height: 300px;
+}
+.banner-3d-doter {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.banner-3d-content {
+    /*transform-style: preserve-3d;*/
+}
+.banner-3d-content-ul {
+    padding: 0;
+    margin: 0;
+    /*transform: rotateZ(20deg) rotateY(-50deg) rotateX(-40deg);*/
+    /*transform-style: preserve-3d;*/
+}
+.banner-3d-content-ul li {
+    list-style: none;
+    display: inline-block;
+    position: relative;
+    transition-duration: 500ms;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+}
+.img-surface {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: gray no-repeat;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+.img_1 {
+    -webkit-transform: translateZ(150px);
+    -moz-transform: translateZ(150px);
+    -ms-transform: translateZ(150px);
+    -o-transform: translateZ(150px);
+    transform: translateZ(150px);
+}
+.img_2 {
+    -webkit-transform: rotateX(90deg) translateZ(150px);
+    -moz-transform: rotateX(90deg) translateZ(150px);
+    -ms-transform: rotateX(90deg) translateZ(150px);
+    -o-transform: rotateX(90deg) translateZ(150px);
+    transform: rotateX(90deg) translateZ(150px);
+}
+.img_3 {
+    -webkit-transform: rotateX(180deg) translateZ(150px);
+    -moz-transform: rotateX(180deg) translateZ(150px);
+    -ms-transform: rotateX(180deg) translateZ(150px);
+    -o-transform: rotateX(180deg) translateZ(150px);
+    transform: rotateX(180deg) translateZ(150px);
+}
+.img_4 {
+    -webkit-transform: rotateX(270deg) translateZ(150px);
+    -moz-transform: rotateX(270deg) translateZ(150px);
+    -ms-transform: rotateX(270deg) translateZ(150px);
+    -o-transform: rotateX(270deg) translateZ(150px);
+    transform: rotateX(270deg) translateZ(150px);
+}
+.banner-3d-doter-ul {
+    padding: 4px 8px;
+    margin: 0;
+}
+.banner-3d-doter-ul li {
+    opacity: 0.6;
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border: 1px solid #333333;
+    cursor: pointer;
+
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+    -webkit-transition-delay: 200ms;
+    -moz-transition-delay: 200ms;
+    -ms-transition-delay: 200ms;
+    -o-transition-delay: 200ms;
+    transition-delay: 200ms;
+}
+.banner-3d-doter-ul .active {
+    background-color: black;
+    opacity: 1;
+    color: white;
+
+}
+
+#seeCode {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 0;
+    width: 120px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: rgba(182,177,184,0.75);
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+    color: #000629;
+}
+
+#seeCode:hover {
+    background-color: rgba(232,227,234,0.75);
+}
+
+
+.banner-3d-2 {
+    position: relative;
+    margin: 100px auto 20px auto;
+    width: 800px;
+    height: 300px;
+}
+.banner-3d-2-content {
+    width: 100%;
+    height: 100%;
+}
+.banner-3d-2-content .d3Item-row {
+    display: flex;
+    display: -webkit-flex;
+}
+.banner-3d-2-content .d3Item {
+
+    /* 启用 3d 视图 */
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transform-origin: center;
+
+    -webkit-transition-duration: 300ms;
+    -moz-transition-duration: 300ms;
+    -ms-transition-duration: 300ms;
+    -o-transition-duration: 300ms;
+    transition-duration: 300ms;
+}
+.banner-3d-2-content .d3Item * {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-origin: center;
+    background: gray no-repeat;
+}
+
+/* 正面 */
+.d3Item .front {
+
+    -webkit-transform: translateZ(40px);
+    -moz-transform: translateZ(40px);
+    -ms-transform: translateZ(40px);
+    -o-transform: translateZ(40px);
+    transform: translateZ(40px);
+}
+/* 右面 */
+.d3Item .right {
+
+    -webkit-transform: rotateY(90deg) translateZ(40px);
+    -moz-transform: rotateY(90deg) translateZ(40px);
+    -ms-transform: rotateY(90deg) translateZ(40px);
+    -o-transform: rotateY(90deg) translateZ(40px);
+    transform: rotateY(90deg) translateZ(40px);
+}
+/* 后面 */
+.d3Item .back {
+
+    -webkit-transform: rotateY(180deg)  translateZ(40px);
+    -moz-transform: rotateY(180deg) translateZ(40px);
+    -ms-transform: rotateY(180deg) translateZ(40px);
+    -o-transform: rotateY(180deg) translateZ(40px);
+    transform: rotateY(180deg) translateZ(40px);
+}
+
+/* 左面 */
+.d3Item .left {
+
+    -webkit-transform: rotateY(-90deg) translateZ(40px);
+    -moz-transform: rotateY(-90deg) translateZ(40px);
+    -ms-transform: rotateY(-90deg) translateZ(40px);
+    -o-transform: rotateY(-90deg) translateZ(40px);
+    transform: rotateY(-90deg) translateZ(40px);
+}
+
+/* 上面 */
+.d3Item .top {
+    background-color: gray;
+    
+    width: 80px;
+    height: 80px;
+
+    -webkit-transform: rotateX(90deg) translateZ(40px);
+    -moz-transform: rotateX(90deg) translateZ(40px);
+    -ms-transform: rotateX(90deg) translateZ(40px);
+    -o-transform: rotateX(90deg) translateZ(40px);
+    transform: rotateX(90deg) translateZ(40px);
+    
+}
+/* 下面 */
+.d3Item .bottom {
+    background-color: gray;
+
+    width: 80px;
+    height: 80px;
+
+    -webkit-transform: rotateX(90deg) translateZ(10px);
+    -moz-transform: rotateX(90deg) translateZ(10px);
+    -ms-transform: rotateX(90deg) translateZ(10px);
+    -o-transform: rotateX(90deg) translateZ(10px);
+    transform: rotateX(90deg) translateZ(10px);
+}

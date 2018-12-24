@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>《音乐怎么了》设置</title>
+    <link rel="stylesheet" href="about.css">
+    <script src="//cdn1.lncld.net/static/js/3.1.1/av-min.js"></script>
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/layer/layer.js"></script>
+</head>
+<body>
+
+<!-- 顶部Header -->
+<div class="page-head content-center-h">
+    <div class="page-head-in page-width content-left-h">
+        <div class="page-head-logo">《音乐怎么了》设置</div>
+        <div class="page-head-function">
+            <div class="hover" id="userfeedback">用户反馈</div>
+        </div>
+    </div>
+</div>
+
+<!-- 设置的正文区域 -->
+<div class="set-group">
+
+
+    <!-- 封面设置区域 -->
+    <div class="set-item">
+        <div class="set-item-title">封面设置</div>
+        <div class="set-item-content">
+            <div class="input-group">
+                <label class="label-item">
+                    请选择新的封面：
+                    <input type="file" id="newcoverurl" accept="image/jpeg,image/png">
+                </label>
+            </div>
+        </div>
+        <div class="set-item-foot">
+            <div class="button primary" id="newcoversubmit">提交</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="set-group">
+    <!-- 新版本app设置区域 -->
+    <div class="set-item">
+        <div class="set-item-title">发布新版</div>
+        <div class="set-item-content">
+
+            <div class="input-group">
+                <label class="label-item">
+                    选择新版文件：
+                    <input type="file" id="newapkfile" name="newapkfile">
+                </label>
+            </div>
+            <div class="input-group">
+                <label class="label-item">
+                    更新弹窗名称：
+                    <input type="text" id="newapkname" name="newapkname" style="width: 400px;" value="发现新版本啦">
+                </label>
+            </div>
+            <div class="input-group">
+                <label class="label-item">
+                    新增功能描述：
+                    <textarea type="text" style="vertical-align: top;width: 400px" id="newapknewfunction"
+                              name="newapknewfunction"></textarea>
+                </label>
+            </div>
+            <div class="input-group">
+                <label class="label-item">
+                    要求强制更新：
+                    <input type="checkbox" class="checkbox" id="checkbox-msd" name="mustDownload"
+                           style="width: 20px">
+                    <label class="checkbox-label" for="checkbox-msd"></label>
+                    <span></span>
+                </label>
+            </div>
+
+        </div>
+        <div class="set-item-foot">
+            <button class="button primary" id="newapksubmit">提交</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+    /**
+     * 调用接口
+     * @param method
+     * @param data
+     * @param callback
+     */
+    function submit(method, data, callback) {
+        // 发起请求
+        $.ajax({
+            url: '../../api/phonemp3.php',
+            type: 'POST',
+            data: JSON.stringify({
+                method: method,
+                data: data
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (resutl) {
+                callback && callback(resutl);
+            },
+            error: function (xmlrequest, errMsg, exception) {
+                console.log('请求出错', xmlrequest, errMsg, exception);
+                callback && callback(undefined, exception)
+            }
+        });
+    }
+
+    var ConfigPage = {
+
+        /**
+         * 配置封面区域
+         */
+        __initCoverConfig: function () {
+            // 监听封面提交按钮点击事件
+            $('#newcoversubmit').on('click', function (event) {
+
+                var coverFileDom = $('#newcoverurl');
+
+                var newCoverFilePath = coverFileDom.val();
+
+                if (!newCoverFilePath) {
+                    layer.alert("请选择封面文件");
+                    return;
+                }
+
+                //加载层-风格4
+                var index = layer.msg('提交中...', {
+                    icon: 16, shade: 0.01, time: 0
+                });
+
+                var coverAvFile = new AV.File("cover.jpg", coverFileDom.get(0).files[0]);
+
+                coverAvFile.save().then(function (result) {
+                    var coverUrl = result.get("url");
+                    submit("saveCover", {
+                        url: coverUrl
+                    }, function (result, err) {
+                        layer.close(index);
+                        if (result && result.code === 200) {
+                            coverFileDom.val("");
+                            layer.alert('设置成功');
+                        } else {
+                            layer.alert((result && result.msg) || err || '设置失败');
+                        }
+                    })
+                }, function (error) {
+                    layer.alert(error.message);
+                    console.log('上传结果', error);
+                });
+
+
+            });
+        },
+
+        /**
+         * 配置新版本区域
+         */
+        __initNewApkConfig: function () {
+
+            $('#newapkfile').on('change', function (event) {
+                var filePath = $(this).val();
+
+                if (!filePath) {
+                    layer.alert("请选择文件");
+                    return;
+                }
+
+                var infos = filePath.split('-');
+
+                if (!infos || infos.length != 3) {
+                    $(this).val("");
+                    layer.alert("文件名不正确");
+                }
+            });
+
+            $('#newapkname').on('click', function (event) {
+                $(this).select();
+            });
+
+            $('#newapksubmit').on('click', function () {
+                var nad = $('#newapkfile');
+                var filePath = nad.val();
+
+                if (!filePath) {
+                    layer.alert("请选择文件");
+                    return;
+                }
+
+                var infos = filePath.split('-');
+
+                if (!infos || infos.length != 3) {
+                    $(this).val("");
+                    layer.alert("文件名不正确");
+                    return;
+                }
+
+                var name = $('#newapkname').val();
+                var newfunction = $('#newapknewfunction').val();
+                var mustDownload = $('#checkbox-msd').get(0).checked ? 1 : 0;
+
+                if (!name) {
+                    layer.alert("请输入更新弹出框名称");
+                    return;
+                }
+
+                if (!newfunction) {
+                    layer.alert("请输入新功能描述");
+                    return;
+                }
+
+
+                layer.msg('上传中...', {
+                    icon: 16,
+                    shade: 0.01, time: 0
+                });
+                // 开始上传文件
+                var file = new AV.File(infos[2], nad[0].files[0])
+                file.save().then(function (result) {
+                    var url = result.get('url');
+                    var version = infos[1];
+                    var size = nad[0].files[0].size;
+
+                    submit("saveApk", {
+                        version: version,
+                        size: size,
+                        name: name,
+                        newfunction: newfunction,
+                        mustDownload: mustDownload,
+                        url: url
+                    }, function (res, err) {
+                        layer.closeAll();
+                        if (err) {
+                            layer.alert(err);
+                        } else {
+                            if (res.code === 200) {
+                                layer.alert("发布成功");
+                                nad.val("");
+                            } else {
+                                layer.alert("发布失败<br>" + res.msg + "<br>" + res.data);
+                            }
+                            console.log(res);
+                        }
+                    });
+
+                }, function (error) {
+                    layer.closeAll();
+                    alert(error.message);
+                });
+            });
+
+        },
+
+        /**
+         * 配置用户反馈区域
+         */
+        __initUserFeedBack: function () {
+
+            var userfeedbackDom = $('#userfeedback');
+
+            userfeedbackDom.on('click', function () {
+               layer.open({
+                   title: '用户反馈',
+                   type: 2,
+                   content: '../../dnmc/feedbacks.php',
+                   area: ['1000px', '500px']
+               });
+            });
+
+        },
+
+        /**
+         * 初始化所有的配置条目
+         */
+        init: function () {
+            for (var index in this) {
+                if (index.indexOf('__') === 0) {
+                    this[index]();
+                }
+            }
+        }
+    };
+
+    $(function () {
+        layer.config({
+            path: '../../js/layer/',
+            anim: 0, //默认动画风格
+            extend: 'myskin/style.css', //加载您的扩展样式
+            skin: 'layer-style-microanswer' //默认皮肤
+        });
+        ConfigPage.init();
+    });
+</script>
+</html>
