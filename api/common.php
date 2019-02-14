@@ -148,6 +148,7 @@ try {
 
         try {
             $name = $util->nullThrow($data, 'name', '请指定事件名称');
+            $fromapp = $util->nullThrow($data, 'fromapp', '请指定应用名称');
             $type = $util->nullThrow($data, 'type', '请指定设备类型');
         } catch (Exception $e) {
             echo $util->buildReturnJson(Util::$CODE_FAIL, $e->getMessage(), null);
@@ -162,6 +163,7 @@ try {
         $result = $sql->insertInto('eventlog')
             ->set([
                 'name' => $name,
+                'fromapp' => $fromapp,
                 'ip' => $ip,
                 'extra' => $extra,
                 'type' => $type
