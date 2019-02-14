@@ -93,13 +93,13 @@ if ($result instanceof mysqli_result) {
             </div>
             <!-- 按钮区域 -->
             <div style="text-align: center;margin-top: 20px;">
-                <a class="btn" href="app.html?t=103" title="作品">作品</a>
+                <a class="btn" href="app.html?t=104" title="作品">作品</a>
                 <i class="dot"></i>
                 <a class="btn" href="javascript:;" id="btnRedPacket" title="领取红包">领红包</a>
                 <i class="dot"></i>
                 <a class="btn" id="tog" href="javascript:;" title="按住查看背面">背面</a>
-                <i class="dot"></i>
-                <a class="btn" href="newquestion.php?t=103" title="我有问题要问">提问</a>
+                <!--<i class="dot"></i>-->
+                <!--<a class="btn" href="newquestion.php?t=103" title="我有问题要问">提问</a>-->
             </div>
 
         </td>
