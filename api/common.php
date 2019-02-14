@@ -66,7 +66,7 @@ try {
         $createAt = time();
 
         $sql = new SQL($util->db(null));
-        $result = $sql-> insertInto("likesudosolver")->set([
+        $result = $sql->insertInto("likesudosolver")->set([
             'userAgent' => $_SERVER['HTTP_USER_AGENT'],
             'createAt' => $createAt,
             'host' => $_SERVER['HTTP_HOST'],
@@ -76,7 +76,7 @@ try {
         if ($result) {
 
             // 插入成功，查询总数目
-            $result = $sql -> select("count(id)")->from("likesudosolver")->d0();
+            $result = $sql->select("count(id)")->from("likesudosolver")->d0();
 
             if ($result instanceof mysqli_result) {
                 echo $util->buildReturnJson2(200, $result->fetch_array(MYSQLI_NUM)[0]);
@@ -97,7 +97,7 @@ try {
         $sql = new SQL($util->db(null));
 
         // 查询总数目
-        $result = $sql -> select("count(id) as zanCount")->from("likesudosolver")->d0();
+        $result = $sql->select("count(id) as zanCount")->from("likesudosolver")->d0();
 
         if ($result instanceof mysqli_result) {
             echo $util->buildReturnJson2(200, $result->fetch_array(MYSQLI_ASSOC));
@@ -133,12 +133,44 @@ try {
         }
 
         // 查询总赞数
-        $result = $sql -> select('count(id) as zanCount') ->from('likeme')->d0();
+        $result = $sql->select('count(id) as zanCount')->from('likeme')->d0();
 
         if ($result instanceof mysqli_result) {
             echo $util->buildReturnJson(200, '获取成功', $result->fetch_array(MYSQLI_ASSOC));
         } else {
             echo $util->buildReturnJson2(701, mysqli_error($sql->getConn()));
+        }
+
+    });
+
+    $util->post("event", function ($data) {
+        global $util;
+
+        try {
+            $name = $util->nullThrow($data, 'name', '请指定事件名称');
+            $type = $util->nullThrow($data, 'type', '请指定设备类型');
+        } catch (Exception $e) {
+            echo $util->buildReturnJson(Util::$CODE_FAIL, $e->getMessage(), null);
+            return;
+        }
+
+        $ip = $util->getClientIp();
+        $extra = $data['extra'];
+
+        // 插入数据
+        $sql = new SQL($util->db(null));
+        $result = $sql->insertInto('eventlog')
+            ->set([
+                'name' => $name,
+                'ip' => $ip,
+                'extra' => $extra,
+                'type' => $type
+            ])->d0();
+
+        if ($result) {
+            echo $util->buildReturnJson(Util::$CODE_SUCCESS, '提交成功', $result);
+        } else {
+            echo $util->buildReturnJson(Util::$CODE_FAIL, '提交失败'.mysqli_error($sql->getConn()), $sql->getSql());
         }
 
     });
