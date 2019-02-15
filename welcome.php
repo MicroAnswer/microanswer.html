@@ -93,7 +93,7 @@ if ($result instanceof mysqli_result) {
             </div>
             <!-- 按钮区域 -->
             <div style="text-align: center;margin-top: 20px;">
-                <a class="btn" href="app.html?t=104" title="作品">作品</a>
+                <a class="btn" href="app.html?t=105" title="作品">作品</a>
                 <i class="dot"></i>
                 <a class="btn" href="javascript:;" id="btnRedPacket" title="领取红包">领红包</a>
                 <i class="dot"></i>
