@@ -109,9 +109,10 @@ if ($result instanceof mysqli_result) {
     </tbody>
 </table>
 <div class="beian-foot">
-    <a class="btn" target="_blank" href="http://www.miitbeian.gov.cn"  style="font-size: 12px;color: gray">蜀ICP备17035828号-1</a>
+    <a class="btn" target="_blank" href="http://www.miitbeian.gov.cn"  style="font-size: 12px;color: gray">蜀ICP备17035828号</a>
     <a class="btn" href="javascript:;" id="btnAliPay"  style="font-size: 12px;color: gray">支付宝付款</a>
     <a class="btn" href="javascript:;" id="btnWxPay"  style="font-size: 12px;color: gray">微信付款</a>
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan style='vertical-align:middle' id='cnzz_stat_icon_1263962182'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1263962182%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
 </div>
 </body>
 <script src="./welcome.js?t=102"></script>
