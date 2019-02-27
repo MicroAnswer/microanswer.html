@@ -152,8 +152,9 @@ class Util
         $conn = mysqli_connect('127.0.0.1', 'zjwdb_6203682', '', 'zjwdb_6203682', '3306');
 
         if (mysqli_connect_errno()) {
+            $errStr = iconv('GBK', 'UTF-8', mysqli_connect_error());
             // 数据库连接出问题
-            echo $this->buildReturnJson(500, "[" . mysqli_connect_errno() . ']' . mysqli_connect_error(), null);
+            echo $this->buildReturnJson(500, "[" . mysqli_connect_errno() . ']' . $errStr, null);
             exit(0);
         }
 
