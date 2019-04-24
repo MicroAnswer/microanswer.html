@@ -149,7 +149,7 @@ class Util
      */
     public function db($charset)
     {
-        $conn = mysqli_connect('127.0.0.1', 'zjwdb_6203682', '', 'zjwdb_6203682', '3306');
+        $conn = mysqli_connect('127.0.0.1', 'zjwdb_6203682', 'Microanswer123..', 'zjwdb_6203682', '3306');
 
         if (mysqli_connect_errno()) {
             $errStr = iconv('GBK', 'UTF-8', mysqli_connect_error());
