@@ -19,6 +19,6 @@
     <!-- 引入样式 -->
     <link href="../css/microanswer.css" type="text/css" rel="stylesheet">
     <!-- 引入缓存器 -->
-    <script src="../js/store.min.js?t=102"></script>
+    <script src="../js/store.min.js"></script>
     <!-- 引入jquery -->
-    <script src="../js/jquery.min.js?t=102"></script>
+    <script src="../js/jquery.min.js"></script>
