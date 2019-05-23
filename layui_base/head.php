@@ -16,6 +16,8 @@
     <meta name="HandheldFriendly" content="true">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- 引入样式 -->
+    <link href="../css/microanswer.css" type="text/css" rel="stylesheet">
     <!-- 引入缓存器 -->
     <script src="../js/store.min.js?t=102"></script>
     <!-- 引入jquery -->

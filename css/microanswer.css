@@ -1,0 +1,70 @@
+/* 根字体大小 */
+html {
+    font-size: 10px;
+}
+
+/* 去除根margin和padding */
+body, body * {
+    margin: 0;
+    padding: 0;
+}
+
+/* 导航 */
+ul.nav {
+    display: block;
+    margin: 0;
+}
+ul.nav li {
+    display: inline-block;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin: 4px 2px;
+    padding: 1px 4px;
+    border-radius: 4px;
+
+    -webkit-transition-duration: 150ms;
+    -moz-transition-duration: 150ms;
+    -ms-transition-duration: 150ms;
+    -o-transition-duration: 150ms;
+    transition-duration: 150ms;
+}
+ul.nav li:hover {
+    background-color: #bbbbbb;
+}
+
+/* 辅助类 */
+.inline-block,
+ul.inline-block,
+div.inline-block,
+p.inline-block,
+a.inline-block,
+img.inline-block{
+    display: inline-block;!important;
+}
+.float-right {
+    float: right;
+}
+.clear-both {
+    clear: both;
+}
+.anim-dur100ms {
+    -webkit-transition-duration: 100ms;
+    -moz-transition-duration: 100ms;
+    -ms-transition-duration: 100ms;
+    -o-transition-duration: 100ms;
+    transition-duration: 100ms;
+}
+.anim-dur200ms {
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+}
+.text-under-line {
+    text-decoration: underline;
+}
+.disable {
+    color: #D9D9D9;
+    opacity: 0.7;
+}
