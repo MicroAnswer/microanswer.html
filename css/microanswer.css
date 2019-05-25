@@ -1,7 +1,7 @@
 /* 根字体大小 */
 html {
     font-size: 10px;
-    line-height: 26px;
+    line-height: 23px;
 }
 
 /* 去除根margin和padding */
@@ -38,6 +38,9 @@ ul.nav li {
     -o-transition-duration: 150ms;
     transition-duration: 150ms;
 }
+ul.nav li a {
+    color: blue;
+}
 
 ul.nav li:hover {
     background-color: #bbbbbb;
@@ -48,11 +51,23 @@ div.new {
     border: 1px solid #D9D9D9;
     margin: 5px 5px 20px 5px;
     background-color: #eeeeee;
+    cursor: pointer;
+    border-radius: 3px;
+
+    -webkit-transition-duration: 156ms;
+    -moz-transition-duration: 156ms;
+    -ms-transition-duration: 156ms;
+    -o-transition-duration: 156ms;
+    transition-duration: 156ms;
+}
+div.new:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px gray;
 }
 
 div.new div.new-head {
     border-bottom: 1px solid #D9D9D9;
-    padding: 0 5px;
+    padding: 3px 5px;
     font-size: 2rem;
     color: black;
 }
@@ -60,7 +75,7 @@ div.new div.new-head {
 div.new div.new-body {
     font-size: 1.6rem;
     text-indent: 3.2rem;
-    padding: 0 5px;
+    padding: 3px 5px;
     color: #161616;
 }
 
