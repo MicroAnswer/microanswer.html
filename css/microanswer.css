@@ -97,6 +97,9 @@ img.inline-block {
 !important;
 }
 
+a.no-underline{
+    text-decoration: none;
+}
 .max-width850 {
     max-width: 850px;
 }

@@ -38,13 +38,14 @@ include "./layui_base/head.php";
             <li><a href="n_app.php">相关作品</a></li>
             <li>Follow</li>
             <li><a href="n_coffee.php">请喝咖啡</a></li>
-            <li class="text-under-line">登录</li>
-            <li class="text-under-line">注册</li>
+            <!--            <li class="text-under-line">登录</li>-->
+            <!--            <li class="text-under-line">注册</li>-->
         </ul>
         <span class="disable no-warp"><a class="btn" target="_blank" href="http://beian.miit.gov.cn">蜀ICP备17035828号</a></span>
         <?php include "./layui_base/cnzz.php"; ?>
     </div>
 </div>
+<?php include './layui_base/mod_zan.php' ?>
 
 <!-- 内容区域 -->
 <div class="max-width850">
